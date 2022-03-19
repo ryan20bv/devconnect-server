@@ -1,1 +1,1 @@
-npm i mongoose express express-validator bcryptjs config gravatar jsonwebtoken request
+npm i mongoose express express-validator bcryptjs config gravatar jsonwebtoken axios
