@@ -5,13 +5,14 @@ const connectDB = require("./config/db");
 const PORT = process.env.PORT || 5001;
 const app = express();
 
+app.use(express.json({ extended: false }));
 connectDB();
 
 app.get("/", (req, res) => {
 	res.send("API running");
 });
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 // define routes
 const UserRouter = require("./routes/api/users");
