@@ -8,14 +8,17 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const jwtSecret = config.get("jwtSecret");
 
-// @UserRoute    POST api/users
-// @desc         Register user
+// @UserRoute    GET api/users
+// @desc         get user
 // @access       Public
 
 UserRouter.get("/", (req, res) => {
 	res.send("ger user");
 });
 
+// @UserRoute    POST api/users
+// @desc         Register user
+// @access       Public
 UserRouter.post(
 	"/",
 	[
