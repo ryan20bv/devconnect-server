@@ -21,6 +21,7 @@ UserRouter.get("/", (req, res) => {
 // @access       Public
 UserRouter.post(
 	"/",
+	// validate req / user input using 'express-validator'
 	[
 		check("name", "Name is required").not().isEmpty(),
 		check("email", "Please enter a valid email").isEmail(),
