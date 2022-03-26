@@ -76,7 +76,7 @@ UserRouter.post(
 			});
 		} catch (error) {
 			console.log(error.message);
-			res.status(500).send("Network Error");
+			res.status(500).send("user Network Error");
 		}
 		// res.send("User");
 	}

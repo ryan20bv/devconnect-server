@@ -42,9 +42,7 @@ AuthRouter.post(
 		const { email, password } = req.body;
 		try {
 			// check if user exists
-			const user = await UserModel.findOne({ email: email }).select(
-				"-password"
-			);
+			const user = await UserModel.findOne({ email: email });
 			if (!user) {
 				return res
 					.status(400)
@@ -72,9 +70,10 @@ AuthRouter.post(
 				if (err) throw err;
 				res.json({ token: token });
 			});
+			// res.send("auth");
 		} catch (error) {
 			console.log(error.message);
-			res.status(500).send("Network Error");
+			res.status(500).send("Auth Network Error");
 		}
 	}
 );
