@@ -1,4 +1,6 @@
 npm i mongoose express express-validator bcryptjs config gravatar jsonwebtoken axios
 
 set route and user model
-set auth
+set api/user registration
+set auth middleware token authentication 
+set api/auth log in

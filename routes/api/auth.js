@@ -1,6 +1,6 @@
 const express = require("express");
 const AuthRouter = express.Router();
-const authMiddleware = require("../../middleware/auth");
+const authMiddleware = require("../../middleware/authMidd");
 const UserModel = require("../../models/UserModel");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -42,7 +42,9 @@ AuthRouter.post(
 		const { email, password } = req.body;
 		try {
 			// check if user exists
-			const user = await UserModel.findOne({ email: email });
+			const user = await UserModel.findOne({ email: email }).select(
+				"-password"
+			);
 			if (!user) {
 				return res
 					.status(400)
