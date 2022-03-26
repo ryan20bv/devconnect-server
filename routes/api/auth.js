@@ -28,36 +28,38 @@ AuthRouter.get("/", authMiddleware, async (req, res) => {
 
 AuthRouter.post(
 	"/",
-	// validate req / user input using 'express-validator'
+	// ! Validate request using express-validator
 	[
-		// check("email", "Email is required").exists(),
-		check("email", "invalid Email").isEmail(),
-		check("password", "Password is required").exists(),
+		check("email", "Please enter a valid email").isEmail(),
+		check("password", "Password is required!").exists(),
 	],
-
 	async (req, res) => {
+		// to get if there are errors in validation
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
 		const { email, password } = req.body;
 		try {
+			// check if user exists
 			const user = await UserModel.findOne({ email: email });
 			if (!user) {
 				return res
 					.status(400)
-					.json({ errors: [{ msg: "Wrong Email or Password!" }] });
+					.json({ errors: [{ msg: "Incorrect Username/Email or Password!" }] });
 			}
-			// console.log(user);
-			// compare password from the user found db
 
+			// user is found email is valid
+			// check or decode password using bcryptjs compare
 			const isMatched = await bcrypt.compare(password, user.password);
+			// if isMatched = false
 			if (!isMatched) {
 				return res
 					.status(400)
-					.json({ errors: [{ msg: "Wrong Email or Password!" }] });
+					.json({ errors: [{ msg: "Incorrect Username/Email or Password!" }] });
 			}
-			// after password has been verified
+
+			// if isMatched = true produce token
 			const payload = {
 				user: {
 					id: user._id,
@@ -69,7 +71,7 @@ AuthRouter.post(
 				res.json({ token: token });
 			});
 		} catch (error) {
-			console.log(error);
+			console.log(error.message);
 			res.status(500).send("Network Error");
 		}
 	}
