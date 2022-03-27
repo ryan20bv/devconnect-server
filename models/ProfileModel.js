@@ -6,7 +6,7 @@ const userModel = require("./UserModel");
 const profilesSchema = new Schema({
 	userId: {
 		type: Schema.Types.ObjectId,
-		ref: "userModel",
+		ref: "User",
 	},
 	// handle: {
 	// 	type: String,
@@ -118,4 +118,4 @@ const profilesSchema = new Schema({
 	},
 });
 
-module.exports = ProfileModel = mongoose.model("Profile", profilesSchema);
+module.exports = mongoose.model("Profile", profilesSchema);
