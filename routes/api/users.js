@@ -12,8 +12,11 @@ const jwtSecret = config.get("jwtSecret");
 // @desc         get user
 // @access       Public
 
-UserRouter.get("/", (req, res) => {
-	res.send("ger user");
+UserRouter.get("/", async (req, res) => {
+	const users = await UserModel.find({});
+	// res.send("ger user");
+
+	res.send(users);
 });
 
 // @UserRoute    POST api/users

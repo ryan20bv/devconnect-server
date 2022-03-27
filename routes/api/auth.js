@@ -1,6 +1,6 @@
 const express = require("express");
 const AuthRouter = express.Router();
-const authMiddleware = require("../../middleware/authMidd");
+const authMiddleware = require("../../middleware/authMiddleware.js");
 const UserModel = require("../../models/UserModel");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -10,10 +10,11 @@ const jwtSecret = config.get("jwtSecret");
 
 // @UserRoute    Get api/auth
 // @desc         authenticate
-// @access       Public
+// @access       Private need authMiddleware
 
 AuthRouter.get("/", authMiddleware, async (req, res) => {
 	try {
+		// user.id is from AuthMiddleware
 		const user = await UserModel.findById(req.user.id).select("-password");
 		res.send(user);
 	} catch (error) {
