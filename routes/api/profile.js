@@ -6,10 +6,19 @@ const userModel = require("../../models/UserModel");
 const { check, validationResult } = require("express-validator");
 
 // @UserRoute    Get api/Profile/
-// @desc         Test route
+// @desc         Get all profile
 // @access       Public
-ProfileRouter.get("/", (req, res) => {
-	res.send("Test Profile Router");
+ProfileRouter.get("/", async (req, res) => {
+	try {
+		const profiles = await ProfileModel.find().populate("userId", [
+			"name",
+			"avatar",
+		]);
+		res.send(profiles);
+	} catch (error) {
+		console.log(error.message);
+		res.status(500).send("Network Error");
+	}
 });
 
 // @UserRoute    Get api/Profile/me
