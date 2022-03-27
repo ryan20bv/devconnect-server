@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// const userModel = require("./UserModel");
+const userModel = require("./UserModel");
 
 // Create Schema
 const profilesSchema = new Schema({
@@ -8,11 +8,11 @@ const profilesSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "userModel",
 	},
-	handle: {
-		type: String,
-		required: true,
-		max: 40,
-	},
+	// handle: {
+	// 	type: String,
+	// 	required: true,
+	// 	max: 40,
+	// },
 	company: {
 		type: String,
 	},
