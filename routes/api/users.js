@@ -10,9 +10,11 @@ const jwtSecret = config.get("jwtSecret");
 const authMiddleware = require("../../middleware/authMiddleware");
 const ProfileModel = require("../../models/ProfileModel");
 
-// @UserRoute    GET api/users
-// @desc         get user
-// @access       Public
+/* 
+	! @UserRoute    GET api/users
+	* @desc         get user
+	? @access       Public
+ */
 
 UserRouter.get("/", async (req, res) => {
 	const users = await UserModel.find({});
@@ -21,12 +23,15 @@ UserRouter.get("/", async (req, res) => {
 	res.send(users);
 });
 
-// @UserRoute    POST api/users/register
-// @desc         Register user
-// @access       Public
+/* 
+	! @UserRoute    POST api/users/register
+	* @desc         Register user
+	? @access       Public
+	* validate req / user input using 'express-validator'
+*/
+
 UserRouter.post(
 	"/register",
-	// validate req / user input using 'express-validator'
 	[
 		check("name", "Name is required").not().isEmpty(),
 		check("email", "Please enter a valid email").isEmail(),
@@ -87,20 +92,22 @@ UserRouter.post(
 	}
 );
 
-// @UserRoute    DELETE api/users/delete
-// @desc         DELETE user and user profile
-// @access       Private needs authMiddleware
+/* 
+	! @UserRoute    DELETE api/users/delete
+	* @desc         DELETE user and user profile
+	? @access       Private needs authMiddleware
+ */
 
 UserRouter.delete("/delete", authMiddleware, async (req, res) => {
 	try {
-		// delete profile of the user
+		// * delete profile of the user
 		let profile = await ProfileModel.findOne({ userId: req.user.id });
 		if (profile) {
 			profile = await ProfileModel.findOneAndDelete({ userId: req.user.id });
 		}
-		// delete the user
-		let user = await UserModel.findByIdAndDelete(req.user.id);
-		res.send("user deleted success!");
+		// * delete the user
+		await UserModel.findByIdAndDelete(req.user.id);
+		res.send({ msg: "User deleted" });
 	} catch (error) {
 		console.log(error.message);
 		res.status(500).send("user Network Error");

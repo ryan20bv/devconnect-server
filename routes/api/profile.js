@@ -5,9 +5,12 @@ const ProfileModel = require("../../models/ProfileModel.js");
 const userModel = require("../../models/UserModel");
 const { check, validationResult } = require("express-validator");
 
-// @UserRoute    Get api/Profile/
-// @desc         Get all profile
-// @access       Public
+/* 
+	! @UserRoute    Get api/Profile/
+	* @desc         Get all profile
+	? @access       Public 
+*/
+
 ProfileRouter.get("/", async (req, res) => {
 	try {
 		const profiles = await ProfileModel.find().populate("userId", [
@@ -21,9 +24,12 @@ ProfileRouter.get("/", async (req, res) => {
 	}
 });
 
-// @UserRoute    Get api/Profile/user/:user_id
-// @desc         Get profile by user id
-// @access       Public
+/* 
+	! @UserRoute    Get api/Profile/user/:user_id
+	* @desc         Get profile by user id
+	? @access       Public
+*/
+
 ProfileRouter.get("/user/:user_id", async (req, res) => {
 	try {
 		const profile = await ProfileModel.findOne({
@@ -43,9 +49,12 @@ ProfileRouter.get("/user/:user_id", async (req, res) => {
 	}
 });
 
-// @UserRoute    Get api/Profile/me
-// @desc         Get current user profile
-// @access       Private needs authMiddleware
+/* 
+	! @UserRoute    Get api/Profile/me
+	* @desc         Get current user profile
+	? @access       Private needs authMiddleware
+*/
+
 ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 	try {
 		//req.user is from authMiddleware
@@ -65,10 +74,12 @@ ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 	}
 });
 
-// @UserRoute    Get api/Profile
-// @desc         Post or Update current user profile
-// @access       Private needs authMiddleware
-// since this is post need express-validator
+/* 
+	! @UserRoute    Get api/Profile
+	* @desc         Post or Update current user profile
+	? @access       Private needs authMiddleware
+	* since this is post need express-validator
+ */
 
 ProfileRouter.post(
 	"/",
@@ -136,13 +147,15 @@ ProfileRouter.post(
 	}
 );
 
-// @UserRoute    DELETE api/Profile/user/profile
-// @desc         DELETE current user profile
-// @access       Private needs authMiddleware
+/* 
+	! @UserRoute    DELETE api/Profile/user/profile
+	* @desc         DELETE current user profile
+	? @access       Private needs authMiddleware
+ */
 
 ProfileRouter.delete(
 	"/user/delete",
-	// since this is private need authMiddleware
+
 	authMiddleware,
 	async (req, res) => {
 		try {
@@ -152,7 +165,7 @@ ProfileRouter.delete(
 			if (!profile) {
 				return res.status(400).json({ errors: [{ msg: "No Profile found" }] });
 			}
-			res.send("delete successfully");
+			res.send({ msg: "User profile deleted" });
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Network Error");

@@ -8,9 +8,11 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const jwtSecret = config.get("jwtSecret");
 
-// @UserRoute    Get api/auth
-// @desc         authenticate
-// @access       Private need authMiddleware
+/* 
+	! @UserRoute    Get api/auth
+	* @desc         authenticate
+	? @access       Private need authMiddleware
+ */
 
 AuthRouter.get("/", authMiddleware, async (req, res) => {
 	try {
@@ -23,9 +25,12 @@ AuthRouter.get("/", authMiddleware, async (req, res) => {
 	}
 });
 
-// @UserRoute    POST api/auth
-// @desc         Log in user
-// @access       Public
+/* 
+	! @UserRoute    POST api/auth
+	* @desc         Log in user
+	? @access       Public
+	* since this is post needs express-validator
+ */
 
 AuthRouter.post(
 	"/login",
