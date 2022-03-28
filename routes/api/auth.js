@@ -28,7 +28,7 @@ AuthRouter.get("/", authMiddleware, async (req, res) => {
 // @access       Public
 
 AuthRouter.post(
-	"/",
+	"/login",
 	// ! Validate request using express-validator
 	[
 		check("email", "Please enter a valid email").isEmail(),

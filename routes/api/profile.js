@@ -141,12 +141,11 @@ ProfileRouter.post(
 // @access       Private needs authMiddleware
 
 ProfileRouter.delete(
-	"/user/profile",
+	"/user/delete",
 	// since this is private need authMiddleware
 	authMiddleware,
 	async (req, res) => {
 		try {
-			console.log(req.user);
 			const profile = await ProfileModel.findOneAndDelete({
 				userId: req.user.id,
 			});
