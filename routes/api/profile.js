@@ -21,6 +21,28 @@ ProfileRouter.get("/", async (req, res) => {
 	}
 });
 
+// @UserRoute    Get api/Profile/user/:user_id
+// @desc         Get profile by user id
+// @access       Public
+ProfileRouter.get("/user/:user_id", async (req, res) => {
+	try {
+		const profile = await ProfileModel.findOne({
+			userId: req.params.user_id,
+		}).populate("userId", ["name", "avatar"]);
+		if (!profile) {
+			return res.status(400).json({ errors: [{ msg: "Profile not found!" }] });
+		}
+
+		res.send(profile);
+	} catch (error) {
+		console.log(error.message);
+		if (error.kind == "ObjectId") {
+			return res.status(400).json({ errors: [{ msg: "Profile not found!" }] });
+		}
+		res.status(500).send("Network Error");
+	}
+});
+
 // @UserRoute    Get api/Profile/me
 // @desc         Get current user profile
 // @access       Private needs authMiddleware
@@ -110,6 +132,31 @@ ProfileRouter.post(
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Auth Network Error");
+		}
+	}
+);
+
+// @UserRoute    DELETE api/Profile/user/profile
+// @desc         DELETE current user profile
+// @access       Private needs authMiddleware
+
+ProfileRouter.delete(
+	"/user/profile",
+	// since this is private need authMiddleware
+	authMiddleware,
+	async (req, res) => {
+		try {
+			console.log(req.user);
+			const profile = await ProfileModel.findOneAndDelete({
+				userId: req.user.id,
+			});
+			if (!profile) {
+				return res.status(400).json({ errors: [{ msg: "No Profile found" }] });
+			}
+			res.send("delete successfully");
+		} catch (error) {
+			console.log(error.message);
+			res.status(500).send("Network Error");
 		}
 	}
 );
