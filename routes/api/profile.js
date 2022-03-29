@@ -197,11 +197,73 @@ ProfileRouter.post(
 			}
 			profile = await ProfileModel.findOneAndUpdate(
 				{ userId: req.user.id },
-				{ experience: [...profile.experience, newExperience] },
+				{ experience: [newExperience, ...profile.experience] },
 				{ new: true }
 			);
 			// res.send(newExperience);
 			res.send({ msg: "User experience updated" });
+		} catch (error) {
+			console.log(error.message);
+			res.status(500).send("Network Error");
+		}
+	}
+);
+
+/* 
+	! @UserRoute    POST api/profile/user/education
+	* @desc         POST current user education array
+	? @access       Private needs authMiddleware
+	* since this is post need express-validator
+ */
+
+ProfileRouter.post(
+	"/user/education",
+	[
+		authMiddleware,
+		[
+			check("school", "School is required!").not().isEmpty(),
+			check("degree", "Degree is required").not().isEmpty(),
+			check("fieldofstudy", "Fieldofstudy is required!").not().isEmpty(),
+			check("from", "From is required").not().isEmpty(),
+			check("to", "To is required!").not().isEmpty(),
+			check("current", "Current is required").not().isEmpty(),
+			check("description", "Description is required!").not().isEmpty(),
+		],
+	],
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+		const { school, degree, fieldofstudy, from, to, current, description } =
+			req.body;
+		const newEducation = {
+			school,
+			degree,
+			fieldofstudy,
+			from,
+			to,
+			current,
+			description,
+		};
+		try {
+			let profile = await ProfileModel.findOne({ userId: req.user.id });
+			if (!profile) {
+				return res.status(400).json({ errors: [{ msg: "No Profile found" }] });
+			}
+
+			if (profile.education.length === 3) {
+				return res
+					.status(400)
+					.json({ errors: [{ msg: "Max of three (3) education only" }] });
+			}
+			profile = await ProfileModel.findOneAndUpdate(
+				{ userId: req.user.id },
+				{ education: [newEducation, ...profile.education] },
+				{ new: true }
+			);
+			// res.send(newExperience);
+			res.send({ msg: "User education updated" });
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Network Error");
