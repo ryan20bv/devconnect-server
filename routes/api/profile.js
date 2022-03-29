@@ -6,7 +6,7 @@ const userModel = require("../../models/UserModel");
 const { check, validationResult } = require("express-validator");
 
 /* 
-	! @UserRoute    Get api/Profile/
+	! @UserRoute    Get api/profile/
 	* @desc         Get all profile
 	? @access       Public 
 */
@@ -25,7 +25,7 @@ ProfileRouter.get("/", async (req, res) => {
 });
 
 /* 
-	! @UserRoute    Get api/Profile/user/:user_id
+	! @UserRoute    Get api/profile/user/:user_id
 	* @desc         Get profile by user id
 	? @access       Public
 */
@@ -50,7 +50,7 @@ ProfileRouter.get("/user/:user_id", async (req, res) => {
 });
 
 /* 
-	! @UserRoute    Get api/Profile/me
+	! @UserRoute    Get api/profile/me
 	* @desc         Get current user profile
 	? @access       Private needs authMiddleware
 */
@@ -75,7 +75,7 @@ ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 });
 
 /* 
-	! @UserRoute    Get api/Profile
+	! @UserRoute    Post api/profile
 	* @desc         Post or Update current user profile
 	? @access       Private needs authMiddleware
 	* since this is post need express-validator
@@ -148,29 +148,86 @@ ProfileRouter.post(
 );
 
 /* 
-	! @UserRoute    DELETE api/Profile/user/profile
-	* @desc         DELETE current user profile
+	! @UserRoute    POST api/profile/user/experience
+	* @desc         POST current user experience array
 	? @access       Private needs authMiddleware
+	* since this is post need express-validator
  */
 
-ProfileRouter.delete(
-	"/user/delete",
-
-	authMiddleware,
+ProfileRouter.post(
+	"/user/experience",
+	[
+		authMiddleware,
+		[
+			check("title", "title is required!").not().isEmpty(),
+			check("company", "Company is required").not().isEmpty(),
+			check("location", "Location is required!").not().isEmpty(),
+			check("from", "From is required").not().isEmpty(),
+			check("to", "To is required!").not().isEmpty(),
+			check("current", "Current is required").not().isEmpty(),
+			check("description", "Description is required!").not().isEmpty(),
+		],
+	],
 	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+		const { title, company, location, from, to, current, description } =
+			req.body;
+		const newExperience = {
+			title,
+			company,
+			location,
+			from,
+			to,
+			current,
+			description,
+		};
 		try {
-			const profile = await ProfileModel.findOneAndDelete({
-				userId: req.user.id,
-			});
+			let profile = await ProfileModel.findOne({ userId: req.user.id });
 			if (!profile) {
 				return res.status(400).json({ errors: [{ msg: "No Profile found" }] });
 			}
-			res.send({ msg: "User profile deleted" });
+
+			if (profile.experience.length === 3) {
+				return res
+					.status(400)
+					.json({ errors: [{ msg: "Max of three (3) experiences only" }] });
+			}
+			profile = await ProfileModel.findOneAndUpdate(
+				{ userId: req.user.id },
+				{ experience: [...profile.experience, newExperience] },
+				{ new: true }
+			);
+			// res.send(newExperience);
+			res.send({ msg: "User experience updated" });
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Network Error");
 		}
 	}
 );
+
+/* 
+	! @UserRoute    DELETE api/profile/user/profile
+	* @desc         DELETE current user profile
+	? @access       Private needs authMiddleware
+ */
+
+ProfileRouter.delete("/user/delete", authMiddleware, async (req, res) => {
+	try {
+		const profile = await ProfileModel.findOneAndDelete({
+			userId: req.user.id,
+		});
+		if (!profile) {
+			return res.status(400).json({ errors: [{ msg: "No Profile found" }] });
+		}
+		res.send({ msg: "User profile deleted" });
+	} catch (error) {
+		console.log(error.message);
+		res.status(500).send("Network Error");
+	}
+});
 
 module.exports = ProfileRouter;
