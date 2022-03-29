@@ -6,7 +6,8 @@ const userModel = require("../../models/UserModel");
 const { check, validationResult } = require("express-validator");
 
 /* 
-	! @UserRoute    Get api/profile/
+	! @serverRoute    Get api/profile
+	!	@additionalRoute /
 	* @desc         Get all profile
 	? @access       Public 
 */
@@ -25,7 +26,8 @@ ProfileRouter.get("/", async (req, res) => {
 });
 
 /* 
-	! @UserRoute    Get api/profile/user/:user_id
+	! @serverRoute    Get api/profile
+	!	@additionalRoute /user/:user_id
 	* @desc         Get profile by user id
 	? @access       Public
 */
@@ -50,7 +52,8 @@ ProfileRouter.get("/user/:user_id", async (req, res) => {
 });
 
 /* 
-	! @UserRoute    Get api/profile/me
+	! @serverRoute    Get api/profile
+	!	@additionalRoute /me
 	* @desc         Get current user profile
 	? @access       Private needs authMiddleware
 */
@@ -75,7 +78,8 @@ ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 });
 
 /* 
-	! @UserRoute    Post api/profile
+	! @serverRoute    Post api/profile
+	!	@additionalRoute /
 	* @desc         Post or Update current user profile
 	? @access       Private needs authMiddleware
 	* since this is post need express-validator
@@ -148,7 +152,8 @@ ProfileRouter.post(
 );
 
 /* 
-	! @UserRoute    POST api/profile/user/experience
+	! @serverRoute    POST api/profile
+	!	@additionalRoute /user/experience
 	* @desc         POST current user experience array
 	? @access       Private needs authMiddleware
 	* since this is post need express-validator
@@ -210,7 +215,8 @@ ProfileRouter.post(
 );
 
 /* 
-	! @UserRoute    POST api/profile/user/education
+	! @serverRoute    POST api/profile
+	!	@additionalRoute /user/education
 	* @desc         POST current user education array
 	? @access       Private needs authMiddleware
 	* since this is post need express-validator
@@ -272,7 +278,8 @@ ProfileRouter.post(
 );
 
 /* 
-	! @UserRoute    DELETE api/profile/user/profile
+	! @serverRoute    DELETE api/profile
+	!	@additionalRoute /user/delete
 	* @desc         DELETE current user profile
 	? @access       Private needs authMiddleware
  */
@@ -291,5 +298,16 @@ ProfileRouter.delete("/user/delete", authMiddleware, async (req, res) => {
 		res.status(500).send("Network Error");
 	}
 });
+
+/* 
+	! @serverRoute    DELETE api/profile
+	!	@additionalRoute /user/experience
+	* @desc         DELETE current user experience
+	? @access       Private needs authMiddleware
+*/
+
+// ProfileRouter.delete(
+// 	'/'
+// )
 
 module.exports = ProfileRouter;

@@ -10,6 +10,7 @@ const jwtSecret = config.get("jwtSecret");
 
 /* 
 	! @UserRoute    Get api/auth
+	!	@additionalRoute /
 	* @desc         authenticate
 	? @access       Private need authMiddleware
  */
@@ -27,6 +28,7 @@ AuthRouter.get("/", authMiddleware, async (req, res) => {
 
 /* 
 	! @UserRoute    POST api/auth
+	!	@additionalRoute /login
 	* @desc         Log in user
 	? @access       Public
 	* since this is post needs express-validator

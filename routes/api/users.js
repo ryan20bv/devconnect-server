@@ -11,7 +11,8 @@ const authMiddleware = require("../../middleware/authMiddleware");
 const ProfileModel = require("../../models/ProfileModel");
 
 /* 
-	! @UserRoute    GET api/users
+	! @serverRoute    GET api/users
+	!	@additionalRoute /
 	* @desc         get user
 	? @access       Public
  */
@@ -24,7 +25,8 @@ UserRouter.get("/", async (req, res) => {
 });
 
 /* 
-	! @UserRoute    POST api/users/register
+	! @UserRoute    POST api/users
+	!	@additionalRoute /register
 	* @desc         Register user
 	? @access       Public
 	* validate req / user input using 'express-validator'
@@ -93,7 +95,8 @@ UserRouter.post(
 );
 
 /* 
-	! @UserRoute    DELETE api/users/delete
+	! @UserRoute    DELETE api/users
+	!	@additionalRoute /delete
 	* @desc         DELETE user and user profile
 	? @access       Private needs authMiddleware
  */
