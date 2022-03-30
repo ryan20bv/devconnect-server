@@ -318,14 +318,14 @@ ProfileRouter.delete(
 						return each;
 					}
 				});
-				console.log(newExperiences);
+				// console.log(newExperiences);
 				profile = await ProfileModel.findOneAndUpdate(
 					{ userId: req.user.id },
 					{ experience: newExperiences },
 					{ new: true }
 				);
 			}
-			res.send("experience deleted!");
+			res.send({ msg: "Experience deleted" });
 		} catch (error) {
 			console.log(error.message);
 			if (error.kind == "ObjectId") {
@@ -338,6 +338,43 @@ ProfileRouter.delete(
 	}
 );
 
+/* 
+	! @serverRoute    DELETE api/profile
+	!	@additionalRoute /user/education/:education_id
+	* @desc         DELETE current user experience
+	? @access       Private needs authMiddleware
+*/
 // todo: delete each education
+ProfileRouter.delete(
+	"/user/education/:education_id",
+	authMiddleware,
+	async (req, res) => {
+		try {
+			let profile = await ProfileModel.findOne({ userId: req.user.id });
+			if (profile) {
+				let newEducations = profile.education.filter((each) => {
+					if (each.id !== req.params.education_id) {
+						return each;
+					}
+				});
+				// console.log(newEducations);
+				profile = await ProfileModel.findOneAndUpdate(
+					{ userId: req.user.id },
+					{ education: newEducations },
+					{ new: true }
+				);
+			}
+			res.send({ msg: "Education deleted" });
+		} catch (error) {
+			console.log(error.message);
+			if (error.kind == "ObjectId") {
+				return res
+					.status(400)
+					.json({ errors: [{ msg: "Profile not found!" }] });
+			}
+			res.status(500).send("Network Error");
+		}
+	}
+);
 
 module.exports = ProfileRouter;
