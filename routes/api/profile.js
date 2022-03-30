@@ -301,13 +301,43 @@ ProfileRouter.delete("/user/delete", authMiddleware, async (req, res) => {
 
 /* 
 	! @serverRoute    DELETE api/profile
-	!	@additionalRoute /user/experience
+	!	@additionalRoute /user/experience/:experience_id
 	* @desc         DELETE current user experience
 	? @access       Private needs authMiddleware
 */
+// todo: delete each experience
+ProfileRouter.delete(
+	"/user/experience/:experience_id",
+	authMiddleware,
+	async (req, res) => {
+		try {
+			let profile = await ProfileModel.findOne({ userId: req.user.id });
+			if (profile) {
+				let newExperiences = profile.experience.filter((each) => {
+					if (each.id !== req.params.experience_id) {
+						return each;
+					}
+				});
+				console.log(newExperiences);
+				profile = await ProfileModel.findOneAndUpdate(
+					{ userId: req.user.id },
+					{ experience: newExperiences },
+					{ new: true }
+				);
+			}
+			res.send("experience deleted!");
+		} catch (error) {
+			console.log(error.message);
+			if (error.kind == "ObjectId") {
+				return res
+					.status(400)
+					.json({ errors: [{ msg: "Profile not found!" }] });
+			}
+			res.status(500).send("Network Error");
+		}
+	}
+);
 
-// ProfileRouter.delete(
-// 	'/'
-// )
+// todo: delete each education
 
 module.exports = ProfileRouter;

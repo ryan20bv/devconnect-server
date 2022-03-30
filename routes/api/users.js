@@ -103,6 +103,7 @@ UserRouter.post(
 
 UserRouter.delete("/delete", authMiddleware, async (req, res) => {
 	try {
+		// todo: delete post
 		// * delete profile of the user
 		let profile = await ProfileModel.findOne({ userId: req.user.id });
 		if (profile) {
