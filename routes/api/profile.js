@@ -152,14 +152,14 @@ ProfileRouter.post(
 );
 
 /* 
-	! @serverRoute    POST api/profile
+	! @serverRoute    PUT api/profile
 	!	@additionalRoute /user/experience
-	* @desc         POST current user experience array
+	* @desc         PUT/add current user experience array
 	? @access       Private needs authMiddleware
 	* since this is post need express-validator
  */
 
-ProfileRouter.post(
+ProfileRouter.put(
 	"/user/experience",
 	[
 		authMiddleware,
@@ -200,12 +200,13 @@ ProfileRouter.post(
 					.status(400)
 					.json({ errors: [{ msg: "Max of three (3) experiences only" }] });
 			}
-			profile = await ProfileModel.findOneAndUpdate(
-				{ userId: req.user.id },
-				{ experience: [newExperience, ...profile.experience] },
-				{ new: true }
-			);
-			// res.send(newExperience);
+			// profile = await ProfileModel.findOneAndUpdate(
+			// 	{ userId: req.user.id },
+			// 	{ experience: [newExperience, ...profile.experience] },
+			// 	{ new: true }
+			// );
+			profile.experience.unshift(newExperience);
+			await profile.save();
 			res.send({ msg: "User experience updated" });
 		} catch (error) {
 			console.log(error.message);
@@ -215,14 +216,14 @@ ProfileRouter.post(
 );
 
 /* 
-	! @serverRoute    POST api/profile
+	! @serverRoute    PUT api/profile
 	!	@additionalRoute /user/education
-	* @desc         POST current user education array
+	* @desc         PUT/ADD current user education array
 	? @access       Private needs authMiddleware
 	* since this is post need express-validator
  */
 
-ProfileRouter.post(
+ProfileRouter.put(
 	"/user/education",
 	[
 		authMiddleware,
@@ -263,12 +264,13 @@ ProfileRouter.post(
 					.status(400)
 					.json({ errors: [{ msg: "Max of three (3) education only" }] });
 			}
-			profile = await ProfileModel.findOneAndUpdate(
-				{ userId: req.user.id },
-				{ education: [newEducation, ...profile.education] },
-				{ new: true }
-			);
-			// res.send(newExperience);
+			// profile = await ProfileModel.findOneAndUpdate(
+			// 	{ userId: req.user.id },
+			// 	{ education: [newEducation, ...profile.education] },
+			// 	{ new: true }
+			// );
+			profile.education.unshift(newEducation);
+			await profile.save();
 			res.send({ msg: "User education updated" });
 		} catch (error) {
 			console.log(error.message);
@@ -312,19 +314,20 @@ ProfileRouter.delete(
 	async (req, res) => {
 		try {
 			let profile = await ProfileModel.findOne({ userId: req.user.id });
-			if (profile) {
-				let newExperiences = profile.experience.filter((each) => {
-					if (each.id !== req.params.experience_id) {
-						return each;
-					}
-				});
-				// console.log(newExperiences);
-				profile = await ProfileModel.findOneAndUpdate(
-					{ userId: req.user.id },
-					{ experience: newExperiences },
-					{ new: true }
-				);
-			}
+			let newExperiences = profile.experience.filter((each) => {
+				if (each.id !== req.params.experience_id) {
+					return each;
+				}
+			});
+			// console.log(newExperiences);
+			// profile = await ProfileModel.findOneAndUpdate(
+			// 	{ userId: req.user.id },
+			// 	{ experience: newExperiences },
+			// 	{ new: true }
+			// );
+			profile.experience = [...newExperiences];
+			await profile.save();
+
 			res.send({ msg: "Experience deleted" });
 		} catch (error) {
 			console.log(error.message);
@@ -351,19 +354,19 @@ ProfileRouter.delete(
 	async (req, res) => {
 		try {
 			let profile = await ProfileModel.findOne({ userId: req.user.id });
-			if (profile) {
-				let newEducations = profile.education.filter((each) => {
-					if (each.id !== req.params.education_id) {
-						return each;
-					}
-				});
-				// console.log(newEducations);
-				profile = await ProfileModel.findOneAndUpdate(
-					{ userId: req.user.id },
-					{ education: newEducations },
-					{ new: true }
-				);
-			}
+			let newEducations = profile.education.filter((each) => {
+				if (each.id !== req.params.education_id) {
+					return each;
+				}
+			});
+			// console.log(newEducations);
+			// profile = await ProfileModel.findOneAndUpdate(
+			// 	{ userId: req.user.id },
+			// 	{ education: newEducations },
+			// 	{ new: true }
+			// );
+			profile.education = [...newEducations];
+			await profile.save();
 			res.send({ msg: "Education deleted" });
 		} catch (error) {
 			console.log(error.message);
