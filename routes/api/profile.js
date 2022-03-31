@@ -4,6 +4,8 @@ const authMiddleware = require("../../middleware/authMiddleware");
 const ProfileModel = require("../../models/ProfileModel.js");
 const userModel = require("../../models/UserModel");
 const { check, validationResult } = require("express-validator");
+const config = require("config");
+const axios = require("axios").default;
 
 /* 
 	! @serverRoute    Get api/profile
@@ -48,6 +50,34 @@ ProfileRouter.get("/user/:user_id", async (req, res) => {
 			return res.status(400).json({ errors: [{ msg: "Profile not found!" }] });
 		}
 		res.status(500).send("Network Error");
+	}
+});
+
+/* 
+	* @desc         Get profile in github by username
+	! @serverRoute    Get api/profile
+	!	@additionalRoute /github/:username
+	? @access       Public
+*/
+
+ProfileRouter.get("/github/:username", async (req, res) => {
+	try {
+		// headers: {'user-agent': 'node.js'}
+		const response = await axios({
+			url: `https://api.github.com/users/${
+				req.params.username
+			}/repos?per_page=5&sort=created:asc&client_id=${config.get(
+				"githubClientId"
+			)}&client_secret=${config.get("githubSecret")}`,
+			method: "get",
+		});
+		if (response.data.length === 0) {
+			return res.send({ msg: "No projects found!" });
+		}
+		res.send(response.data);
+	} catch (error) {
+		console.log(error.message);
+		res.status(404).send({ msg: "No github profile found!" });
 	}
 });
 
