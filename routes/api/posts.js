@@ -135,7 +135,7 @@ PostsRouter.delete("/delete/:post_id", authMiddleware, async (req, res) => {
 /* 
 	* @desc        		like a post
 	! @serverRoute    PUT api/posts
-	!	@additionalRoute /likes/:post_id
+	!	@additionalRoute /like/:post_id
 	? @access      		Private
 	* @desc        		needs auth and express validator
 */
@@ -145,13 +145,41 @@ PostsRouter.put("/like/:post_id", authMiddleware, async (req, res) => {
 		let user = post.likes.filter((like) => {
 			return like.userId.toString() === req.user.id;
 		});
-		console.log(user);
 		if (user.length > 0) {
 			return res.status(400).send("Already liked!");
 		}
 		post.likes.unshift({ userId: req.user.id });
 		await post.save();
 		res.status(200).send(post.likes);
+	} catch (error) {
+		if (error.kind == "ObjectId") {
+			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+		}
+		res.status(500).send("Likes Network Error");
+	}
+});
+
+/* 
+	* @desc        		unlike a post
+	! @serverRoute    PUT api/posts
+	!	@additionalRoute /unlike/:post_id
+	? @access      		Private
+	* @desc        		needs auth and express validator
+*/
+PostsRouter.put("/unlike/:post_id", authMiddleware, async (req, res) => {
+	try {
+		let post = await PostModel.findById(req.params.post_id);
+		let user = post.likes.filter((like) => {
+			return like.userId.toString() === req.user.id;
+		});
+		if (user.length === 0) {
+			return res.status(400).send("Not yet liked!");
+		}
+		post.likes = post.likes.filter((like) => {
+			return like.userId.toString() !== req.user.id;
+		});
+		await post.save();
+		res.status(200).send("unlike post");
 	} catch (error) {
 		if (error.kind == "ObjectId") {
 			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
