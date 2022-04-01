@@ -36,7 +36,7 @@ PostsRouter.get("/", async (req, res) => {
 PostsRouter.get("/post/:user_id", async (req, res) => {
 	try {
 		const posts = await PostModel.find({ userId: req.params.user_id });
-		res.status(200).send([posts]);
+		res.status(200).send(posts);
 	} catch (error) {
 		if (error.kind == "ObjectId") {
 			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
@@ -82,5 +82,25 @@ PostsRouter.post(
 		}
 	}
 );
+
+/* 
+	* @desc        		delete post
+	! @serverRoute    Post api/posts
+	!	@additionalRoute /post/delete
+	? @access      		Private
+	* @desc        		needs auth and express validator
+*/
+
+PostsRouter.delete("/delete/:post_id", authMiddleware, async (req, res) => {
+	try {
+		let posts = await PostModel.findByIdAndDelete(req.params.post_id);
+		res.status(200).send(posts);
+	} catch (error) {
+		if (error.kind == "ObjectId") {
+			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+		}
+		res.status(500).send("Post Network Error");
+	}
+});
 
 module.exports = PostsRouter;
