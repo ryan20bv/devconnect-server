@@ -14,6 +14,38 @@ const PostModel = require("../../models/PostModel");
 */
 
 PostsRouter.get("/", async (req, res) => {
+	try {
+		const posts = await PostModel.find();
+		if (!posts) {
+			return res.status(400).json({ errors: [{ msg: "No Posts found!" }] });
+		}
+		res.status(200).send(posts);
+	} catch (error) {
+		console.log(error.message);
+		res.status(500).send("Post Network Error");
+	}
+});
+
+/* 
+	* @desc        		get posts by user
+	! @serverRoute    Get api/posts
+	!	@additionalRoute /post/:user_id
+	? @access      		Public 
+*/
+
+PostsRouter.get("/post/:user_id", async (req, res) => {
+	try {
+		const posts = await PostModel.find({ userId: req.params.user_id });
+		res.status(200).send([posts]);
+	} catch (error) {
+		if (error.kind == "ObjectId") {
+			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+		}
+		res.status(500).send("Post Network Error");
+	}
+});
+
+PostsRouter.get("/", async (req, res) => {
 	const posts = await PostModel.find();
 	res.status(200).send(posts);
 });
