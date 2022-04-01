@@ -10,14 +10,14 @@ const PostModel = require("../../models/PostModel");
 	* @desc        		get all post
 	! @serverRoute    Get api/posts
 	!	@additionalRoute /
-	? @access      		Public 
+	? @access      		private 
 */
 
-PostsRouter.get("/", async (req, res) => {
+PostsRouter.get("/", authMiddleware, async (req, res) => {
 	try {
-		const posts = await PostModel.find();
+		const posts = await PostModel.find().sort({ date: -1 });
 		if (!posts) {
-			return res.status(400).json({ errors: [{ msg: "No Posts found!" }] });
+			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
 		}
 		res.status(200).send(posts);
 	} catch (error) {
@@ -27,15 +27,20 @@ PostsRouter.get("/", async (req, res) => {
 });
 
 /* 
-	* @desc        		get posts by user
+	* @desc        		get posts by user_id
 	! @serverRoute    Get api/posts
-	!	@additionalRoute /post/:user_id
-	? @access      		Public 
+	!	@additionalRoute /:user_id
+	? @access      		private
 */
 
-PostsRouter.get("/post/:user_id", async (req, res) => {
+PostsRouter.get("/user/:user_id", authMiddleware, async (req, res) => {
 	try {
-		const posts = await PostModel.find({ userId: req.params.user_id });
+		const posts = await PostModel.find({ userId: req.params.user_id }).sort({
+			date: -1,
+		});
+		if (!posts) {
+			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+		}
 		res.status(200).send(posts);
 	} catch (error) {
 		if (error.kind == "ObjectId") {
@@ -45,9 +50,26 @@ PostsRouter.get("/post/:user_id", async (req, res) => {
 	}
 });
 
-PostsRouter.get("/", async (req, res) => {
-	const posts = await PostModel.find();
-	res.status(200).send(posts);
+/* 
+	* @desc        		get posts by post_id
+	! @serverRoute    Get api/posts
+	!	@additionalRoute /:post_id
+	? @access      		private 
+*/
+
+PostsRouter.get("/post/:post_id", authMiddleware, async (req, res) => {
+	try {
+		const post = await PostModel.findById(req.params.post_id);
+		if (!post) {
+			return res.status(400).json({ errors: [{ msg: "Post not found!" }] });
+		}
+		res.status(200).send(post);
+	} catch (error) {
+		if (error.kind == "ObjectId") {
+			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+		}
+		res.status(500).send("Post Network Error");
+	}
 });
 
 /* 
