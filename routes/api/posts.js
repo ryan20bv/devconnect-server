@@ -204,20 +204,19 @@ PostsRouter.put(
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-		const user = await UserModel.findById(req.user.id);
-		const { text } = req.body;
-		const newComment = {
-			userId: req.user.id,
-			text: text,
-			name: user.name,
-			avatar: user.avatar,
-		};
-
 		try {
+			const user = await UserModel.findById(req.user.id);
+			const newComment = {
+				userId: req.user.id,
+				text: req.body.text,
+				name: user.name,
+				avatar: user.avatar,
+			};
+
 			let post = await PostModel.findById(req.params.post_id);
 			post.comments.unshift(newComment);
 			await post.save();
-			res.status(200).send("comment added");
+			res.status(200).send(post.comments);
 		} catch (error) {
 			if (error.kind == "ObjectId") {
 				return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
@@ -241,8 +240,20 @@ PostsRouter.put(
 	async (req, res) => {
 		try {
 			let post = await PostModel.findById(req.params.post_id);
+			// const commentToDelete = post.comments.filter((comment) => {
+			// 	return comment._id.toString() === req.params.comment_id;
+			// });
+			const commentToDelete = post.comments.find((comment) => {
+				return comment._id.toString() === req.params.comment_id;
+			});
+			// check if the user id of the comment is the user id that is deleting
+			if (commentToDelete.userId.toString() !== req.user.id) {
+				return res
+					.status(400)
+					.json({ errors: [{ msg: "user unAuthorized!" }] });
+			}
 			post.comments = post.comments.filter((comment) => {
-				return comment.id !== req.params.comment_id;
+				return comment._id.toString() !== req.params.comment_id;
 			});
 			await post.save();
 			res.status(200).send(post.comments);
