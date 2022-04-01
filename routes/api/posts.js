@@ -193,7 +193,7 @@ PostsRouter.put("/unlike/:post_id", authMiddleware, async (req, res) => {
 	! @serverRoute    PUT api/posts
 	!	@additionalRoute /comment/:post_id
 	? @access      		Private
-	* @desc        		needs auth and express validator
+	* @desc        		needs auth and express validator and check because sending a body
 */
 
 PostsRouter.put(
@@ -214,7 +214,6 @@ PostsRouter.put(
 		};
 
 		try {
-			console.log(newComment);
 			let post = await PostModel.findById(req.params.post_id);
 			post.comments.unshift(newComment);
 			await post.save();
@@ -224,6 +223,34 @@ PostsRouter.put(
 				return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
 			}
 			res.status(500).send("Comments Network Error");
+		}
+	}
+);
+
+/* 
+	* @desc        		delete comment to a post
+	! @serverRoute    PUT api/posts
+	!	@additionalRoute /comment/:post_id/delete/:comment_id
+	? @access      		Private
+	* @desc        		needs auth and express validator
+*/
+
+PostsRouter.put(
+	"/comment/:post_id/delete/:comment_id",
+	authMiddleware,
+	async (req, res) => {
+		try {
+			let post = await PostModel.findById(req.params.post_id);
+			post.comments = post.comments.filter((comment) => {
+				return comment.id !== req.params.comment_id;
+			});
+			await post.save();
+			res.status(200).send(post.comments);
+		} catch (error) {
+			if (error.kind == "ObjectId") {
+				return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			}
+			res.status(500).send("Delete Comments Network Error");
 		}
 	}
 );
