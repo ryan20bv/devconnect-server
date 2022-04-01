@@ -188,4 +188,44 @@ PostsRouter.put("/unlike/:post_id", authMiddleware, async (req, res) => {
 	}
 });
 
+/* 
+	* @desc        		comment to a post
+	! @serverRoute    PUT api/posts
+	!	@additionalRoute /comment/:post_id
+	? @access      		Private
+	* @desc        		needs auth and express validator
+*/
+
+PostsRouter.put(
+	"/comment/:post_id",
+	[authMiddleware, [check("text", "Text is requires").not().isEmpty()]],
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+		const user = await UserModel.findById(req.user.id);
+		const { text } = req.body;
+		const newComment = {
+			userId: req.user.id,
+			text: text,
+			name: user.name,
+			avatar: user.avatar,
+		};
+
+		try {
+			console.log(newComment);
+			let post = await PostModel.findById(req.params.post_id);
+			post.comments.unshift(newComment);
+			await post.save();
+			res.status(200).send("comment added");
+		} catch (error) {
+			if (error.kind == "ObjectId") {
+				return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			}
+			res.status(500).send("Comments Network Error");
+		}
+	}
+);
+
 module.exports = PostsRouter;
