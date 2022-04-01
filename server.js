@@ -17,9 +17,12 @@ app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 // define routes
 const UserRouter = require("./routes/api/users");
 app.use("/api/users", UserRouter);
+
 const AuthRouter = require("./routes/api/auth");
 app.use("/api/auth", AuthRouter);
+
 const ProfileRouter = require("./routes/api/profile");
 app.use("/api/profile", ProfileRouter);
+
 const PostsRouter = require("./routes/api/posts");
 app.use("/api/posts", PostsRouter);
