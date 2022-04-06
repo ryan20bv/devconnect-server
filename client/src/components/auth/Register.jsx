@@ -19,26 +19,33 @@ const Register = () => {
 		if (password !== password2) {
 			console.log("Password do not match!");
 		} else {
-			const newUser = {
-				name,
-				email,
-				password,
-			};
-			try {
-				const res = await axios.post(
-					"http://localhost:5000/api/users/register",
-					newUser
-				);
-				console.log(res.data);
-				setFormData({
-					name: "",
-					email: "",
-					password: "",
-					password2: "",
-				});
-			} catch (error) {
-				console.log(error.response.data);
-			}
+			console.log("success");
+			setFormData({
+				name: "",
+				email: "",
+				password: "",
+				password2: "",
+			});
+			// const newUser = {
+			// 	name,
+			// 	email,
+			// 	password,
+			// };
+			// try {
+			// 	const res = await axios.post(
+			// 		"http://localhost:5000/api/users/register",
+			// 		newUser
+			// 	);
+			// 	console.log(res.data);
+			// 	setFormData({
+			// 		name: "",
+			// 		email: "",
+			// 		password: "",
+			// 		password2: "",
+			// 	});
+			// } catch (error) {
+			// 	console.log(error.response.data);
+			// }
 		}
 	};
 
