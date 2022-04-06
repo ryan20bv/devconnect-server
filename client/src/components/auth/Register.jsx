@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
 	const [formData, setFormData] = useState({
@@ -13,18 +14,31 @@ const Register = () => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const submitHandler = (e) => {
+	const submitHandler = async (e) => {
 		e.preventDefault();
 		if (password !== password2) {
 			console.log("Password do not match!");
 		} else {
-			console.log(formData);
-			setFormData({
-				name: "",
-				email: "",
-				password: "",
-				password2: "",
-			});
+			const newUser = {
+				name,
+				email,
+				password,
+			};
+			try {
+				const res = await axios.post(
+					"http://localhost:5000/api/users/register",
+					newUser
+				);
+				console.log(res.data);
+				setFormData({
+					name: "",
+					email: "",
+					password: "",
+					password2: "",
+				});
+			} catch (error) {
+				console.log(error.response.data);
+			}
 		}
 	};
 
