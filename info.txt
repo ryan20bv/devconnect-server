@@ -1,8 +1,29 @@
-npm run server
+====> // this is for backend server.js using node.js express and mongoose
+1. "npm run server"
+2. npm i mongoose express express-validator bcryptjs config gravatar jsonwebtoken axios
+3. set route and user model
+4. set api/user registration
+5. set auth middleware token authentication 
+6. set api/auth log in
 
-npm i mongoose express express-validator bcryptjs config gravatar jsonwebtoken axios
+===> // this is for frontend using React <====
 
-set route and user model
-set api/user registration
-set auth middleware token authentication 
-set api/auth log in
+1. npx create-react-app client
+2. for ui design watch "https://www.youtube.com/watch?v=IFM9hbapeA0&list=PLillGF-Rfqba3xeEvDzIcUCxwMlGiewfV"
+3. to run client and server at the same time using "concurrently package"
+  - go to package.json of 'server'
+  - "client": "npm start --prefix client"
+  - "dev": "concurrently \"npm run server\" \"npm run client \" "
+  - then run "npm run dev"
+  ===> or 
+  - go to package.json of 'server'
+  - "client": "npm start --prefix client"
+  - then run "npm run client" for client frontend
+  - then run "npm run server" for server backend
+
+4. cd into 'client'
+5. install this for package.json of client "npm i axios react-router-dom redux react-redux redux-thunk redux-devtools-extension moment react-moment"
+6. (optional) at the client folder
+  - delete '.gitignore' 'README.md'
+  - delete 'git' by "rm -rf.git" make sure you are at "client" folder
+7. at the 'package.json' of 'client' type/insert "proxy":"http://localhost:5000" for axios 
