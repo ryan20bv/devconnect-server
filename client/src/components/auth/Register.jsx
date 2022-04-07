@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { setAlert } from "../../redux/actions/alertAction";
+import { setAlertAction } from "../../redux/actions/alertAction";
+import { registerUserAction } from "../../redux/actions/authAction";
 import PropTypes from "prop-types";
 import Alert from "../layout/alert";
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlertAction, registerUserAction }) => {
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -20,35 +21,17 @@ const Register = ({ setAlert }) => {
 	const submitHandler = async (e) => {
 		e.preventDefault();
 		if (password !== password2) {
-			setAlert("Password does not match!", "danger");
+			setAlertAction("Password does not match!", "danger");
 		} else {
-			console.log("success");
-			setFormData({
-				name: "",
-				email: "",
-				password: "",
-				password2: "",
-			});
-			// const newUser = {
-			// 	name,
-			// 	email,
-			// 	password,
-			// };
-			// try {
-			// 	const res = await axios.post(
-			// 		"http://localhost:5000/api/users/register",
-			// 		newUser
-			// 	);
-			// 	console.log(res.data);
-			// 	setFormData({
-			// 		name: "",
-			// 		email: "",
-			// 		password: "",
-			// 		password2: "",
-			// 	});
-			// } catch (error) {
-			// 	console.log(error.response.data);
-			// }
+			const msg = await registerUserAction(name, email, password);
+			if (msg === "success") {
+				setFormData({
+					name: "",
+					email: "",
+					password: "",
+					password2: "",
+				});
+			}
 		}
 	};
 
@@ -97,7 +80,6 @@ const Register = ({ setAlert }) => {
 						minLength='6'
 						value={password}
 						onChange={(e) => changeHandler(e)}
-						required
 					/>
 				</div>
 				<div className='form-group'>
@@ -108,7 +90,6 @@ const Register = ({ setAlert }) => {
 						minLength='6'
 						value={password2}
 						onChange={(e) => changeHandler(e)}
-						required
 					/>
 				</div>
 				<input type='submit' className='btn btn-primary' value='Register' />
@@ -121,12 +102,15 @@ const Register = ({ setAlert }) => {
 };
 
 Register.propTypes = {
-	setAlert: PropTypes.func.isRequired,
+	setAlertAction: PropTypes.func.isRequired,
+	registerUserAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
 	return { state };
 };
 
-export default connect(mapStateToProps, { setAlert })(Register);
+export default connect(mapStateToProps, { setAlertAction, registerUserAction })(
+	Register
+);
 // export default Register;

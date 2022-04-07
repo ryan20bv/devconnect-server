@@ -27,3 +27,13 @@
   - delete '.gitignore' 'README.md'
   - delete 'git' by "rm -rf.git" make sure you are at "client" folder
 7. at the 'package.json' of 'client' type/insert "proxy":"http://localhost:5000" for axios 
+
+
+====> for redux <=====
+
+1. make type 
+  - go to "types.js" in action folder
+2. make authReducer.js
+3. include "authReducer" in rootReducer
+4. make authAction.js
+  - trigger alertAction needs dispatch

@@ -51,7 +51,9 @@ UserRouter.post(
 		try {
 			let user = await UserModel.findOne({ email: email });
 			if (user) {
-				return res.status(400).json({ msg: "User already exist!" });
+				return res
+					.status(400)
+					.send({ errors: [{ msg: "User already exist!" }] });
 			}
 			const avatar = gravatar.url(email, {
 				s: "200",
@@ -71,8 +73,6 @@ UserRouter.post(
 			user.password = hashPassword;
 
 			await user.save();
-			// console.log(user);
-			// res.send("User registered!");
 
 			const payload = {
 				user: {
@@ -82,13 +82,12 @@ UserRouter.post(
 
 			jwt.sign(payload, jwtSecret, { expiresIn: "5h" }, (err, token) => {
 				if (err) throw err;
-				res.json({ token: token });
+				res.send({ token: token, msg: "success" });
 			});
 		} catch (error) {
 			console.log(error.message);
-			res.status(500).send("user Network Error");
+			res.status(500).send({ errors: [{ msg: "User Network Error" }] });
 		}
-		// res.send("User");
 	}
 );
 
