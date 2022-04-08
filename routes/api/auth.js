@@ -39,7 +39,9 @@ AuthRouter.post(
 	// ! Validate request using express-validator
 	[
 		check("email", "Please enter a valid email").isEmail(),
-		check("password", "Password is required!").exists(),
+		check("password", "Please enter a password with 6 or more characters")
+			.not()
+			.isEmpty(),
 	],
 	async (req, res) => {
 		// to get if there are errors in validation
@@ -76,7 +78,7 @@ AuthRouter.post(
 
 			jwt.sign(payload, jwtSecret, { expiresIn: "5h" }, (err, token) => {
 				if (err) throw err;
-				res.json({ token: token });
+				res.json({ token: token, msg: "success" });
 			});
 			// res.send("auth");
 		} catch (error) {

@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 // import axios from "axios";
+import { connect } from "react-redux";
+import { setAlertAction } from "../../redux/actions/alertAction";
+import { loginUserAction } from "../../redux/actions/authAction";
+import PropTypes from "prop-types";
+import Alert from "../layout/alert";
 
-const Login = () => {
+const Login = ({ loginUserAction }) => {
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -14,15 +19,19 @@ const Login = () => {
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		console.log("success");
-		setFormData({
-			email: "",
-			password: "",
-		});
+		console.log(formData);
+		const msg = await loginUserAction(email, password);
+		if (msg === "success") {
+			setFormData({
+				email: "",
+				password: "",
+			});
+		}
 	};
 
 	return (
 		<section className='container'>
+			<Alert />
 			<h1 className='large text-primary'>Sign In</h1>
 			<p className='lead'>
 				<i className='fas fa-user'></i> Sign into Your Account
@@ -40,7 +49,7 @@ const Login = () => {
 						name='email'
 						value={email}
 						onChange={(e) => changeHandler(e)}
-						required
+						// required
 					/>
 				</div>
 				<div className='form-group'>
@@ -48,10 +57,9 @@ const Login = () => {
 						type='password'
 						placeholder='Password'
 						name='password'
-						minLength='6'
+						// minLength='6'
 						value={password}
 						onChange={(e) => changeHandler(e)}
-						required
 					/>
 				</div>
 				<input type='submit' className='btn btn-primary' value='Login' />
@@ -63,4 +71,8 @@ const Login = () => {
 	);
 };
 
-export default Login;
+Login.propTypes = {
+	loginUserAction: PropTypes.func.isRequired,
+};
+
+export default connect(null, { loginUserAction })(Login);
