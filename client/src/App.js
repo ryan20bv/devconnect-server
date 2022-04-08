@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -10,9 +10,18 @@ import Login from "./components/auth/Login";
 import { Provider } from "react-redux";
 import store from "./redux/store/store";
 // state
-import Alert from "./components/layout/alert.jsx";
+import authToken from "./utilities/authToken";
+import { loadUserAction } from "./redux/actions/authAction";
+
+if (localStorage.token) {
+	authToken(localStorage);
+}
 
 const App = () => {
+	useEffect(() => {
+		store.dispatch(loadUserAction());
+	}, []);
+
 	return (
 		<Provider store={store}>
 			<BrowserRouter>
