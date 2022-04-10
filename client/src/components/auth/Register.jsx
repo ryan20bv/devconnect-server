@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { setAlertAction } from "../../redux/actions/alertAction";
 import { registerUserAction } from "../../redux/actions/authAction";
 import PropTypes from "prop-types";
 import Alert from "../layout/alert";
 
-const Register = ({ setAlertAction, registerUserAction }) => {
+const Register = ({ setAlertAction, registerUserAction, isAuthenticated }) => {
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -34,6 +34,10 @@ const Register = ({ setAlertAction, registerUserAction }) => {
 			}
 		}
 	};
+
+	if (isAuthenticated) {
+		return <Navigate to='/dashboard' />;
+	}
 
 	return (
 		<section className='container'>
@@ -104,10 +108,13 @@ const Register = ({ setAlertAction, registerUserAction }) => {
 Register.propTypes = {
 	setAlertAction: PropTypes.func.isRequired,
 	registerUserAction: PropTypes.func.isRequired,
+	isAuthenticated: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
-	return { state };
+	return {
+		isAuthenticated: state.authReducer.isAuthenticated,
+	};
 };
 
 export default connect(mapStateToProps, { setAlertAction, registerUserAction })(

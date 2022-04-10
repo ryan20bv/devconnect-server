@@ -5,13 +5,14 @@ import {
 	AUTH_ERROR,
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
+	LOGOUT,
 } from "./types";
 import axios from "axios";
 import { setAlertAction } from "./alertAction";
 import authToken from "../../utilities/authToken";
 
 // Load User
-export const loadUserAction = () => async (dispatch) => {
+const loadUserAction = () => async (dispatch) => {
 	if (localStorage.token) {
 		authToken(localStorage.token);
 	}
@@ -29,41 +30,40 @@ export const loadUserAction = () => async (dispatch) => {
 };
 
 // Register User
-export const registerUserAction =
-	(name, email, password) => async (dispatch) => {
-		const newUser = {
-			name,
-			email,
-			password,
-		};
-
-		try {
-			const res = await axios.post(
-				"http://localhost:5000/api/users/register",
-				newUser
-			);
-			dispatch({
-				type: REGISTRATION_SUCCESS,
-				payload: res.data,
-			});
-			dispatch(loadUserAction());
-			dispatch(setAlertAction(res.data.msg, "success"));
-			return res.data.msg;
-		} catch (err) {
-			const errors = err.response.data.errors;
-			if (errors) {
-				errors.forEach((element) => {
-					dispatch(setAlertAction(element.msg, "danger"));
-				});
-			}
-			dispatch({
-				type: REGISTRATION_FAIL,
-			});
-		}
+const registerUserAction = (name, email, password) => async (dispatch) => {
+	const newUser = {
+		name,
+		email,
+		password,
 	};
 
+	try {
+		const res = await axios.post(
+			"http://localhost:5000/api/users/register",
+			newUser
+		);
+		dispatch({
+			type: REGISTRATION_SUCCESS,
+			payload: res.data,
+		});
+		dispatch(loadUserAction());
+		dispatch(setAlertAction(res.data.msg, "success"));
+		return res.data.msg;
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach((element) => {
+				dispatch(setAlertAction(element.msg, "danger"));
+			});
+		}
+		dispatch({
+			type: REGISTRATION_FAIL,
+		});
+	}
+};
+
 // LOGIN User
-export const loginUserAction = (email, password) => async (dispatch) => {
+const loginUserAction = (email, password) => async (dispatch) => {
 	const newUser = {
 		email,
 		password,
@@ -93,3 +93,12 @@ export const loginUserAction = (email, password) => async (dispatch) => {
 		});
 	}
 };
+
+const logoutAction = () => (dispatch) => {
+	console.log("logout");
+	dispatch({
+		type: LOGOUT,
+	});
+};
+
+export { loadUserAction, registerUserAction, loginUserAction, logoutAction };
