@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getCurrentProfileAction } from "../../redux/actions/profileAction.js";
 
-function Dashboard() {
+const Dashboard = ({ getCurrentProfileAction, authState, profileState }) => {
+	useEffect(() => {
+		getCurrentProfileAction();
+	}, []);
 	return (
 		<section className='container'>
 			<h1 className='large text-primary'>Dashboard</h1>
@@ -79,5 +85,18 @@ function Dashboard() {
 			</div>
 		</section>
 	);
-}
-export default Dashboard;
+};
+
+Dashboard.propTypes = {
+	getCurrentProfileAction: PropTypes.func.isRequired,
+	authState: PropTypes.object.isRequired,
+	profileState: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => {
+	return {
+		authState: state.authReducer,
+		profileState: state.profileReducer,
+	};
+};
+export default connect(mapStateToProps, { getCurrentProfileAction })(Dashboard);
