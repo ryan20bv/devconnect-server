@@ -98,11 +98,11 @@ ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 		if (!userProfile) {
 			return res
 				.status(400)
-				.json({ errors: [{ msg: "There is no profile for this user!" }] });
+				.json({ error: { msg: "There is no profile for this user!" } });
 		}
 		res.send(userProfile);
 	} catch (error) {
-		console.log(error.message);
+		// console.log(error.message);
 		res.status(500).send("Network Error");
 	}
 });

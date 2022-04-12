@@ -21,7 +21,7 @@ AuthRouter.get("/", authMiddleware, async (req, res) => {
 		const user = await UserModel.findById(req.user.id).select("-password");
 		res.send(user);
 	} catch (error) {
-		console.log(error.message);
+		// console.log(error.message);
 		res.status(500).send({ errors: [{ msg: "Server error!" }] });
 	}
 });
@@ -82,7 +82,7 @@ AuthRouter.post(
 			});
 			// res.send("auth");
 		} catch (error) {
-			console.log(error.message);
+			// console.log(error.message);
 			res.status(500).send("Auth Network Error");
 		}
 	}
