@@ -21,6 +21,9 @@ const Dashboard = React.lazy(() => import("./components/dashboard/dashboard"));
 const CreateProfile = React.lazy(() =>
 	import("./components/profile-form/CreateProfile.jsx")
 );
+const EditProfile = React.lazy(() =>
+	import("./components/profile-form/EditProfile.jsx")
+);
 
 if (localStorage.token) {
 	authToken(localStorage);
@@ -67,6 +70,14 @@ const App = () => {
 							element={
 								<React.Suspense fallback={<>...</>}>
 									<CreateProfile />
+								</React.Suspense>
+							}
+						/>
+						<Route
+							path='/edit-profile'
+							element={
+								<React.Suspense fallback={<>...</>}>
+									<EditProfile />
 								</React.Suspense>
 							}
 						/>

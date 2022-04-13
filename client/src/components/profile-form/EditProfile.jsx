@@ -1,16 +1,23 @@
 // rafcp
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { createProfileAction } from "../../redux/actions/profileAction.js";
-import Alert from "../layout/alert";
-
-const CreateProfile = ({
-	authState: { isAuthenticated },
+import {
+	getCurrentProfileAction,
 	createProfileAction,
+} from "../../redux/actions/profileAction.js";
+import Alert from "../layout/alert";
+import { setAlertAction } from "../../redux/actions/alertAction";
+
+const EditProfile = ({
+	authState: { isAuthenticated },
+	profileState: { profile, loading },
+	createProfileAction,
+	setAlertAction,
 }) => {
 	const [socialMedia, setSocialMedia] = useState(false);
+	const [hasChanged, setHasChanged] = useState(false);
 	const [profileData, setProfileData] = useState({
 		status: "",
 		company: "",
@@ -26,27 +33,51 @@ const CreateProfile = ({
 		instagram: "",
 	});
 
+	useEffect(() => {
+		getCurrentProfileAction();
+		setProfileData({
+			status: loading || !profile.status ? "" : profile.status,
+			company: loading || !profile.company ? "" : profile.company,
+			website: loading || !profile.website ? "" : profile.website,
+			location: loading || !profile.location ? "" : profile.location,
+			skills: loading || !profile.skills ? "" : profile.skills.join(","),
+			githubusername:
+				loading || !profile.githubusername ? "" : profile.githubusername,
+			bio: loading || !profile.bio ? "" : profile.bio,
+			twitter: loading || !profile.social.twitter ? "" : profile.social.twitter,
+			facebook:
+				loading || !profile.social.facebook ? "" : profile.social.facebook,
+			linkedin:
+				loading || !profile.social.linkedin ? "" : profile.social.linkedin,
+			youtube: loading || !profile.social.youtube ? "" : profile.social.youtube,
+			instagram:
+				loading || !profile.social.instagram ? "" : profile.social.instagram,
+		});
+	}, [loading]);
+
 	const changeHandler = (e) => {
 		setProfileData({ ...profileData, [e.target.name]: e.target.value });
+		if (!hasChanged) {
+			setHasChanged(true);
+		}
 	};
 
-	const navigate = useNavigate();
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		const msg = await createProfileAction(profileData);
-		if (msg === "created") {
-			// this is how to pass params in navigate
-			return navigate("/dashboard", { state: { msg } });
+		if (hasChanged) {
+			await createProfileAction(profileData, true);
+		} else {
+			setAlertAction("nothing has been changed", "dark");
 		}
+		setHasChanged(false);
 	};
 
 	if (!isAuthenticated) {
 		return <Navigate to='/login' />;
 	}
-
 	return (
 		<section className='container'>
-			<h1 className='large text-primary'>Create Your Profile</h1>
+			<h1 className='large text-primary'>Edit Your Profile</h1>
 			<p className='lead'>
 				<i className='fas fa-user'></i> Let's get some information to make your
 				profile stand out
@@ -58,7 +89,12 @@ const CreateProfile = ({
 					<small className='form-text'>
 						* Give us an idea of where you are at in your career
 					</small>
-					<select required name='status' onChange={(e) => changeHandler(e)}>
+					<select
+						required
+						name='status'
+						onChange={(e) => changeHandler(e)}
+						value={profileData.status}
+					>
 						<option value='0'>* Select Professional Status</option>
 						<option value='Developer'>Developer</option>
 						<option value='Junior Developer'>Junior Developer</option>
@@ -219,15 +255,23 @@ const CreateProfile = ({
 	);
 };
 
-CreateProfile.propTypes = {
+EditProfile.propTypes = {
+	getCurrentProfileAction: PropTypes.func.isRequired,
 	createProfileAction: PropTypes.func.isRequired,
 	authState: PropTypes.object.isRequired,
+	profileState: PropTypes.object.isRequired,
+	setAlertAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		authState: state.authReducer,
+		profileState: state.profileReducer,
 	};
 };
 
-export default connect(mapStateToProps, { createProfileAction })(CreateProfile);
+export default connect(mapStateToProps, {
+	getCurrentProfileAction,
+	createProfileAction,
+	setAlertAction,
+})(EditProfile);

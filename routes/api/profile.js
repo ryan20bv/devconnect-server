@@ -129,7 +129,6 @@ ProfileRouter.post(
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-
 		const {
 			company,
 			website,
@@ -168,11 +167,11 @@ ProfileRouter.post(
 					profileFields,
 					{ new: true }
 				);
-				return res.send({ profile, msg: "updated" });
+				return res.send({ profile, msg: "created" });
 			} else if (!profile) {
 				profile = new ProfileModel(profileFields);
 				await profile.save();
-				res.send({ profile, msg: "created" });
+				res.send({ profile, msg: "updated" });
 			}
 		} catch (error) {
 			console.log(error.message);
