@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getCurrentProfileAction } from "../../redux/actions/profileAction.js";
 import Spinner from "../layout/spinner.jsx";
+import Alert from "../layout/alert";
+import DashAction from "./dashAction";
 
 const Dashboard = ({
 	getCurrentProfileAction,
@@ -14,6 +16,7 @@ const Dashboard = ({
 	useEffect(() => {
 		getCurrentProfileAction();
 	}, []);
+
 	if (!isAuthenticated) {
 		return <Navigate to='/login' />;
 	}
@@ -21,13 +24,16 @@ const Dashboard = ({
 		<Spinner />
 	) : (
 		<section className='container'>
+			<Alert />
 			<h1 className='large text-primary'>Dashboard</h1>
 			<p className='lead'>
 				<i className='fas fa-user'></i> Welcome {user && user.name}
 			</p>
 			{/* for profile */}
 			{profile !== null ? (
-				<React.Fragment>has profile</React.Fragment>
+				<React.Fragment>
+					<DashAction />
+				</React.Fragment>
 			) : (
 				<React.Fragment>
 					<p>{error.msg}</p>
@@ -36,17 +42,7 @@ const Dashboard = ({
 					</Link>
 				</React.Fragment>
 			)}
-			{/* <div className='dash-buttons'>
-				<a href='edit-profile.html' className='btn btn-light'>
-					<i className='fas fa-user-circle text-primary'></i> Edit Profile
-				</a>
-				<a href='add-experience.html' className='btn btn-light'>
-					<i className='fab fa-black-tie text-primary'></i> Add Experience
-				</a>
-				<a href='add-education.html' className='btn btn-light'>
-					<i className='fas fa-graduation-cap text-primary'></i> Add Education
-				</a>
-			</div>
+			{/* 
 
 			<h2 className='my-2'>Experience Credentials</h2>
 			<table className='table'>
@@ -122,4 +118,6 @@ const mapStateToProps = (state) => {
 		profileState: state.profileReducer,
 	};
 };
-export default connect(mapStateToProps, { getCurrentProfileAction })(Dashboard);
+export default connect(mapStateToProps, {
+	getCurrentProfileAction,
+})(Dashboard);

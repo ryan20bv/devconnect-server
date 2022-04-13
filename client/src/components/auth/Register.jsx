@@ -24,7 +24,7 @@ const Register = ({ setAlertAction, registerUserAction, isAuthenticated }) => {
 			setAlertAction("Password does not match!", "danger");
 		} else {
 			const msg = await registerUserAction(name, email, password);
-			if (msg === "success") {
+			if (msg === "registered") {
 				setFormData({
 					name: "",
 					email: "",
@@ -59,7 +59,7 @@ const Register = ({ setAlertAction, registerUserAction, isAuthenticated }) => {
 						name='name'
 						value={name}
 						onChange={(e) => changeHandler(e)}
-						required
+						// required
 					/>
 				</div>
 				<div className='form-group'>
@@ -69,7 +69,7 @@ const Register = ({ setAlertAction, registerUserAction, isAuthenticated }) => {
 						name='email'
 						value={email}
 						onChange={(e) => changeHandler(e)}
-						required
+						// required
 					/>
 					<small className='form-text'>
 						This site uses Gravatar so if you want a profile image, use a
@@ -81,7 +81,7 @@ const Register = ({ setAlertAction, registerUserAction, isAuthenticated }) => {
 						type='password'
 						placeholder='Password'
 						name='password'
-						minLength='6'
+						// minLength='6'
 						value={password}
 						onChange={(e) => changeHandler(e)}
 					/>
@@ -91,7 +91,7 @@ const Register = ({ setAlertAction, registerUserAction, isAuthenticated }) => {
 						type='password'
 						placeholder='Confirm Password'
 						name='password2'
-						minLength='6'
+						// minLength='6'
 						value={password2}
 						onChange={(e) => changeHandler(e)}
 					/>

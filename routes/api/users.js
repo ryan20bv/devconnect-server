@@ -82,7 +82,7 @@ UserRouter.post(
 
 			jwt.sign(payload, jwtSecret, { expiresIn: "5h" }, (err, token) => {
 				if (err) throw err;
-				res.send({ token: token, msg: "success" });
+				res.send({ token: token, msg: "registered" });
 			});
 		} catch (error) {
 			console.log(error.message);

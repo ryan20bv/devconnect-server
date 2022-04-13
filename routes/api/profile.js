@@ -109,14 +109,14 @@ ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 
 /* 
 	! @serverRoute    Post api/profile
-	!	@additionalRoute /
+	!	@additionalRoute /create
 	* @desc         Post or Update current user profile
 	? @access       Private needs authMiddleware
 	* since this is post need express-validator
  */
 
 ProfileRouter.post(
-	"/",
+	"/create",
 	[
 		authMiddleware,
 		[
@@ -168,11 +168,11 @@ ProfileRouter.post(
 					profileFields,
 					{ new: true }
 				);
-				return res.send(profile);
+				return res.send({ profile, msg: "updated" });
 			} else if (!profile) {
 				profile = new ProfileModel(profileFields);
 				await profile.save();
-				res.send(profile);
+				res.send({ profile, msg: "created" });
 			}
 		} catch (error) {
 			console.log(error.message);

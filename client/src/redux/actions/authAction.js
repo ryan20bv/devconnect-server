@@ -48,7 +48,7 @@ const registerUserAction = (name, email, password) => async (dispatch) => {
 			payload: res.data,
 		});
 		dispatch(loadUserAction());
-		dispatch(setAlertAction(res.data.msg, "success"));
+		// dispatch(setAlertAction(res.data.msg, "success"));
 		return res.data.msg;
 	} catch (err) {
 		const errors = err.response.data.errors;
@@ -80,7 +80,7 @@ const loginUserAction = (email, password) => async (dispatch) => {
 			payload: res.data,
 		});
 		dispatch(loadUserAction());
-		dispatch(setAlertAction(res.data.msg, "success"));
+		// dispatch(setAlertAction(res.data.msg, "success"));
 		return res.data.msg;
 	} catch (err) {
 		const errors = err.response.data.errors;

@@ -18,6 +18,9 @@ import { loadUserAction } from "./redux/actions/authAction";
 const Register = React.lazy(() => import("./components/auth/Register"));
 const Login = React.lazy(() => import("./components/auth/Login"));
 const Dashboard = React.lazy(() => import("./components/dashboard/dashboard"));
+const CreateProfile = React.lazy(() =>
+	import("./components/profile-form/CreateProfile.jsx")
+);
 
 if (localStorage.token) {
 	authToken(localStorage);
@@ -56,6 +59,14 @@ const App = () => {
 							element={
 								<React.Suspense fallback={<>...</>}>
 									<Dashboard />
+								</React.Suspense>
+							}
+						/>
+						<Route
+							path='/create-profile'
+							element={
+								<React.Suspense fallback={<>...</>}>
+									<CreateProfile />
 								</React.Suspense>
 							}
 						/>
