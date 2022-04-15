@@ -27,6 +27,9 @@ const EditProfile = React.lazy(() =>
 const AddExperience = React.lazy(() =>
 	import("./components/profile-form/addExperience.jsx")
 );
+const AddEducation = React.lazy(() =>
+	import("./components/profile-form/addEducation.jsx")
+);
 
 if (localStorage.token) {
 	authToken(localStorage);
@@ -89,6 +92,14 @@ const App = () => {
 							element={
 								<React.Suspense fallback={<>...</>}>
 									<AddExperience />
+								</React.Suspense>
+							}
+						/>
+						<Route
+							path='/add-education'
+							element={
+								<React.Suspense fallback={<>...</>}>
+									<AddEducation />
 								</React.Suspense>
 							}
 						/>

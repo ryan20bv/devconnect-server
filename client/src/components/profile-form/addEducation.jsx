@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { newExperienceAction } from "../../redux/actions/profileAction";
+import { newEducationAction } from "../../redux/actions/profileAction";
 import PropTypes from "prop-types";
 import Alert from "../layout/alert";
 
-const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
-	const [newExperience, setNewExperience] = useState({
-		title: "",
-		company: "",
-		location: "",
+const AddEducation = ({ isAuthenticated, newEducationAction }) => {
+	const [newEducation, setNewEducation] = useState({
+		school: "",
+		degree: "",
+		fieldofstudy: "",
 		from: "",
 		current: "",
 		to: "",
@@ -17,8 +17,8 @@ const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
 	});
 
 	const changeHandler = (e) => {
-		setNewExperience({
-			...newExperience,
+		setNewEducation({
+			...newEducation,
 			[e.target.name]: e.target.value,
 			current: e.target.checked,
 		});
@@ -26,7 +26,7 @@ const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
 	const navigate = useNavigate();
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		const msg = await newExperienceAction(newExperience);
+		const msg = await newEducationAction(newEducation);
 		if (msg === "success") {
 			return navigate("/dashboard");
 		}
@@ -37,45 +37,45 @@ const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
 	}
 
 	return (
-		<section className='container'>
-			<h1 className='large text-primary'>Add An Experience</h1>
+		<section className='container' onSubmit={(e) => submitHandler(e)}>
+			<h1 className='large text-primary'>Add Your Education</h1>
 			<p className='lead'>
-				<i className='fas fa-code-branch'></i> Add any developer/programming
-				positions that you have had in the past
+				<i className='fas fa-graduation-cap'></i> Add any school, bootcamp, etc
+				that you have attended
 			</p>
 			<small>* = required field</small>
 			<Alert />
-			<form className='form' onSubmit={(e) => submitHandler(e)}>
+			<form className='form'>
 				<div className='form-group'>
-					<small className='form-text'>* Title</small>
+					<small className='form-text'>* School</small>
 					<input
 						type='text'
-						placeholder='* Job Title'
-						name='title'
+						placeholder='* School or Bootcamp'
+						name='school'
 						onChange={(e) => changeHandler(e)}
-						value={newExperience.title}
-						required
+						value={newEducation.school}
+						// required
 					/>
 				</div>
 				<div className='form-group'>
-					<small className='form-text'>* Company</small>
+					<small className='form-text'>* Degree</small>
 					<input
 						type='text'
-						placeholder='* Company'
-						name='company'
+						placeholder='* Degree or Certificate'
+						name='degree'
 						onChange={(e) => changeHandler(e)}
-						value={newExperience.company}
-						required
+						value={newEducation.degree}
+						// required
 					/>
 				</div>
 				<div className='form-group'>
-					<small className='form-text'>Location</small>
+					<small className='form-text'>* Field of study</small>
 					<input
 						type='text'
-						placeholder='Location'
-						name='location'
+						placeholder='Field Of Study'
+						name='fieldofstudy'
 						onChange={(e) => changeHandler(e)}
-						value={newExperience.location}
+						value={newEducation.fieldofstudy}
 					/>
 				</div>
 				<div className='form-group'>
@@ -84,8 +84,8 @@ const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
 						type='date'
 						name='from'
 						onChange={(e) => changeHandler(e)}
-						value={newExperience.from}
-						required
+						value={newEducation.from}
+						// required
 					/>
 				</div>
 				<div className='form-group'>
@@ -94,19 +94,19 @@ const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
 							type='checkbox'
 							name='current'
 							onChange={(e) => changeHandler(e)}
-							value={newExperience.current}
+							value={newEducation.current}
 						/>{" "}
-						Current Job
+						Current School or Bootcamp
 					</p>
 				</div>
-				{!newExperience.current && (
+				{!newEducation.current && (
 					<div className='form-group'>
 						<h4>To Date</h4>
 						<input
 							type='date'
 							name='to'
 							onChange={(e) => changeHandler(e)}
-							value={newExperience.to}
+							value={newEducation.to}
 						/>
 					</div>
 				)}
@@ -116,13 +116,13 @@ const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
 						name='description'
 						cols='30'
 						rows='5'
-						placeholder='Job Description'
+						placeholder='Program Description'
 						onChange={(e) => changeHandler(e)}
-						value={newExperience.description}
+						value={newEducation.description}
 					></textarea>
 				</div>
 				<input type='submit' className='btn btn-primary my-1' />
-				<Link className='btn btn-light my-1' to='/dashboard'>
+				<Link className='btn btn-light my-1' to='dashboard'>
 					Go Back
 				</Link>
 			</form>
@@ -130,8 +130,8 @@ const AddExperience = ({ isAuthenticated, newExperienceAction }) => {
 	);
 };
 
-AddExperience.propTypes = {
-	newExperienceAction: PropTypes.func.isRequired,
+AddEducation.propTypes = {
+	newEducationAction: PropTypes.func.isRequired,
 	isAuthenticated: PropTypes.bool,
 };
 
@@ -141,4 +141,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { newExperienceAction })(AddExperience);
+export default connect(mapStateToProps, { newEducationAction })(AddEducation);
