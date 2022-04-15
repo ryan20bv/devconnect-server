@@ -193,13 +193,13 @@ ProfileRouter.put(
 	[
 		authMiddleware,
 		[
-			check("title", "title is required!").not().isEmpty(),
+			check("title", "Title is required!").not().isEmpty(),
 			check("company", "Company is required").not().isEmpty(),
-			check("location", "Location is required!").not().isEmpty(),
+			// check("location", "Location is required!").not().isEmpty(),
 			check("from", "From is required").not().isEmpty(),
-			check("to", "To is required!").not().isEmpty(),
-			check("current", "Current is required").not().isEmpty(),
-			check("description", "Description is required!").not().isEmpty(),
+			// check("to", "To is required!").not().isEmpty(),
+			// check("current", "Current is required").not().isEmpty(),
+			// check("description", "Description is required!").not().isEmpty(),
 		],
 	],
 	async (req, res) => {
@@ -236,7 +236,7 @@ ProfileRouter.put(
 			// );
 			profile.experience.unshift(newExperience);
 			await profile.save();
-			res.send({ msg: "User experience updated" });
+			res.send({ profile, msg: "success" });
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Network Error");

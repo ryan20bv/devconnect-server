@@ -56,4 +56,33 @@ const createProfileAction =
 		}
 	};
 
-export { getCurrentProfileAction, createProfileAction };
+const newExperienceAction = (experienceData) => async (dispatch) => {
+	try {
+		const res = await axios.put(
+			"http://localhost:5000/api/profile/user/experience",
+			experienceData
+		);
+		dispatch({
+			type: GET_PROFILE,
+			payload: res.data.profile,
+		});
+		dispatch(setAlertAction("Experience added", "success"));
+		return res.data.msg;
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach((element) => {
+				dispatch(setAlertAction(element.msg, "danger"));
+			});
+		}
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err?.response.data,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
+export { getCurrentProfileAction, createProfileAction, newExperienceAction };
