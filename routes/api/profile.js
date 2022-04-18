@@ -356,8 +356,7 @@ ProfileRouter.delete(
 			// );
 			profile.experience = [...newExperiences];
 			await profile.save();
-
-			res.send({ msg: "Experience deleted" });
+			res.send({ profile, msg: "Experience deleted" });
 		} catch (error) {
 			console.log(error.message);
 			if (error.kind == "ObjectId") {
@@ -396,7 +395,7 @@ ProfileRouter.delete(
 			// );
 			profile.education = [...newEducations];
 			await profile.save();
-			res.send({ msg: "Education deleted" });
+			res.send({ profile, msg: "Education deleted" });
 		} catch (error) {
 			console.log(error.message);
 			if (error.kind == "ObjectId") {

@@ -8,6 +8,8 @@ import Spinner from "../layout/spinner.jsx";
 import Alert from "../layout/alert";
 import DashAction from "./dashAction";
 import Profile from "./profile.jsx";
+import Experience from "./Experience.jsx";
+import Education from "./Education.jsx";
 
 const Dashboard = ({
 	getCurrentProfileAction,
@@ -42,6 +44,8 @@ const Dashboard = ({
 				<React.Fragment>
 					<DashAction />
 					<Profile userProfile={profile} />
+					<Experience experience={profile.experience} />
+					<Education education={profile.education} />
 				</React.Fragment>
 			)}
 

@@ -3,6 +3,8 @@ import {
 	PROFILE_ERROR,
 	CLEAR_PROFILE,
 	UPDATE_PROFILE,
+	DELETE_EXPERIENCE,
+	DELETE_EDUCATION,
 } from "../actions/types";
 
 const initialState = {
@@ -18,6 +20,8 @@ const profileReducer = (state = initialState, action) => {
 	switch (type) {
 		case GET_PROFILE:
 		case UPDATE_PROFILE:
+		case DELETE_EXPERIENCE:
+		case DELETE_EDUCATION:
 			return {
 				...state,
 				profile: payload,

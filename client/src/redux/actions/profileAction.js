@@ -1,6 +1,12 @@
 import axios from "axios";
 import { setAlertAction } from "./alertAction";
-import { GET_PROFILE, UPDATE_PROFILE, PROFILE_ERROR } from "./types";
+import {
+	GET_PROFILE,
+	UPDATE_PROFILE,
+	PROFILE_ERROR,
+	DELETE_EXPERIENCE,
+	DELETE_EDUCATION,
+} from "./types";
 
 const getCurrentProfileAction = () => async (dispatch) => {
 	try {
@@ -114,9 +120,41 @@ const newEducationAction = (educationData) => async (dispatch) => {
 	}
 };
 
+const deleteExperienceAction = (id) => async (dispatch) => {
+	try {
+		const res = await axios.delete(
+			"http://localhost:5000/api/profile/user/experience/" + id
+		);
+		dispatch({
+			type: DELETE_EXPERIENCE,
+			payload: res.data.profile,
+		});
+		dispatch(setAlertAction(res.data.msg, "success"));
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const deleteEducationAction = (id) => async (dispatch) => {
+	try {
+		const res = await axios.delete(
+			"http://localhost:5000/api/profile/user/education/" + id
+		);
+		dispatch({
+			type: DELETE_EDUCATION,
+			payload: res.data.profile,
+		});
+		dispatch(setAlertAction(res.data.msg, "success"));
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export {
 	getCurrentProfileAction,
 	createProfileAction,
 	newExperienceAction,
 	newEducationAction,
+	deleteExperienceAction,
+	deleteEducationAction,
 };
