@@ -1,6 +1,6 @@
 import axios from "axios";
 import { setAlertAction } from "./alertAction";
-import { GET_PROFILE, PROFILE_ERROR } from "./types";
+import { GET_PROFILE, UPDATE_PROFILE, PROFILE_ERROR } from "./types";
 
 const getCurrentProfileAction = () => async (dispatch) => {
 	try {
@@ -63,7 +63,7 @@ const newExperienceAction = (experienceData) => async (dispatch) => {
 			experienceData
 		);
 		dispatch({
-			type: GET_PROFILE,
+			type: UPDATE_PROFILE,
 			payload: res.data.profile,
 		});
 		dispatch(setAlertAction("Experience added", "success"));
@@ -92,10 +92,10 @@ const newEducationAction = (educationData) => async (dispatch) => {
 			educationData
 		);
 		dispatch({
-			type: GET_PROFILE,
+			type: UPDATE_PROFILE,
 			payload: res.data.profile,
 		});
-		dispatch(setAlertAction("Experience added", "success"));
+		dispatch(setAlertAction("Education added", "success"));
 		return res.data.msg;
 	} catch (err) {
 		const errors = err.response.data.errors;

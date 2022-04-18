@@ -7,6 +7,7 @@ import { getCurrentProfileAction } from "../../redux/actions/profileAction.js";
 import Spinner from "../layout/spinner.jsx";
 import Alert from "../layout/alert";
 import DashAction from "./dashAction";
+import Profile from "./profile.jsx";
 
 const Dashboard = ({
 	getCurrentProfileAction,
@@ -40,6 +41,7 @@ const Dashboard = ({
 			) : (
 				<React.Fragment>
 					<DashAction />
+					<Profile userProfile={profile} />
 				</React.Fragment>
 			)}
 
