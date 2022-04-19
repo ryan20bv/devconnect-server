@@ -16,9 +16,9 @@ const Experience = ({ experience, deleteExperienceAction }) => {
 				<td>{company}</td>
 				<td className='hide-sm'>{title}</td>
 				<td className='hide-sm'>
-					<Moment format='YYYY/MM/DD'>{from}</Moment>
+					<Moment format='D MMM YYYY'>{from}</Moment>
 					{"  "} - {"  "}
-					{current ? "current" : <Moment format='YYYY/MM/DD'>{to}</Moment>}
+					{current ? "current" : <Moment format='D MMM YYYY'>{to}</Moment>}
 				</td>
 				<td>
 					<button className='btn btn-danger' onClick={() => deleteHandler(_id)}>
@@ -48,6 +48,7 @@ const Experience = ({ experience, deleteExperienceAction }) => {
 
 Experience.propTypes = {
 	experience: PropTypes.array.isRequired,
+	deleteExperienceAction: PropTypes.func.isRequired,
 };
 
 export default connect(null, { deleteExperienceAction })(Experience);

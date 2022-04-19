@@ -7,6 +7,8 @@ import {
 	LOGIN_FAIL,
 	LOGOUT,
 	CLEAR_PROFILE,
+	DELETE_ACCOUNT,
+	PROFILE_ERROR,
 } from "./types";
 import axios from "axios";
 import { setAlertAction } from "./alertAction";
@@ -104,4 +106,29 @@ const logoutAction = () => (dispatch) => {
 	});
 };
 
-export { loadUserAction, registerUserAction, loginUserAction, logoutAction };
+const deleteAccountAction = () => async (dispatch) => {
+	try {
+		const res = await axios.delete("http://localhost:5000/api/users/delete");
+		dispatch({
+			type: DELETE_ACCOUNT,
+			// payload: res.data.profile,
+		});
+		dispatch(setAlertAction(res.data.msg));
+	} catch (err) {
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err?.response.data,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
+export {
+	loadUserAction,
+	registerUserAction,
+	loginUserAction,
+	logoutAction,
+	deleteAccountAction,
+};

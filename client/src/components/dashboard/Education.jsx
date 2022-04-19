@@ -16,9 +16,9 @@ const Education = ({ education, deleteEducationAction }) => {
 				<td>{school}</td>
 				<td className='hide-sm'>{degree}</td>
 				<td className='hide-sm'>
-					<Moment format='YYYY/MM/DD'>{from}</Moment>
+					<Moment format='D MMM YYYY'>{from}</Moment>
 					{"  "} - {"  "}
-					{current ? "current" : <Moment format='YYYY/MM/DD'>{to}</Moment>}
+					{current ? "current" : <Moment format='D MMM YYYY'>{to}</Moment>}
 				</td>
 				<td>
 					<button className='btn btn-danger' onClick={() => deleteHandler(_id)}>
@@ -49,6 +49,7 @@ const Education = ({ education, deleteEducationAction }) => {
 
 Education.propTypes = {
 	education: PropTypes.array.isRequired,
+	deleteEducationAction: PropTypes.func.isRequired,
 };
 
 export default connect(null, { deleteEducationAction })(Education);

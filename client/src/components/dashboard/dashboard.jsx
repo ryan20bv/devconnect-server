@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -10,15 +10,24 @@ import DashAction from "./dashAction";
 import Profile from "./profile.jsx";
 import Experience from "./Experience.jsx";
 import Education from "./Education.jsx";
+import ModalLayout from "../layout/ModalLayout.jsx";
+import { deleteAccountAction } from "../../redux/actions/authAction.js";
 
 const Dashboard = ({
 	getCurrentProfileAction,
 	authState: { user, isAuthenticated },
 	profileState: { profile, loading, error },
+	deleteAccountAction,
 }) => {
 	useEffect(() => {
 		getCurrentProfileAction();
 	}, []);
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const modalHandler = () => {
+		setIsModalOpen(true);
+	};
 
 	if (!isAuthenticated) {
 		return <Navigate to='/login' />;
@@ -44,13 +53,23 @@ const Dashboard = ({
 				<React.Fragment>
 					<DashAction />
 					<Profile userProfile={profile} />
-					<Experience experience={profile.experience} />
-					<Education education={profile.education} />
+					{profile.experience.length > 0 && (
+						<Experience experience={profile.experience} />
+					)}
+					{profile.education.length > 0 && (
+						<Education education={profile.education} />
+					)}
 				</React.Fragment>
 			)}
 
+			<ModalLayout
+				isModalOpen={isModalOpen}
+				setIsModalOpen={setIsModalOpen}
+				deleteAccount={deleteAccountAction}
+			/>
+
 			<div className='my-2'>
-				<button className='btn btn-danger'>
+				<button className='btn btn-danger' onClick={() => modalHandler()}>
 					<i className='fas fa-user-minus'></i>
 					Delete My Account
 				</button>
@@ -63,6 +82,7 @@ Dashboard.propTypes = {
 	getCurrentProfileAction: PropTypes.func.isRequired,
 	authState: PropTypes.object.isRequired,
 	profileState: PropTypes.object.isRequired,
+	deleteAccountAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -73,4 +93,5 @@ const mapStateToProps = (state) => {
 };
 export default connect(mapStateToProps, {
 	getCurrentProfileAction,
+	deleteAccountAction,
 })(Dashboard);

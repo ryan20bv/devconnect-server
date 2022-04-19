@@ -131,7 +131,13 @@ const deleteExperienceAction = (id) => async (dispatch) => {
 		});
 		dispatch(setAlertAction(res.data.msg, "success"));
 	} catch (err) {
-		console.log(err);
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err?.response.data,
+				status: err.response.status,
+			},
+		});
 	}
 };
 
@@ -146,7 +152,13 @@ const deleteEducationAction = (id) => async (dispatch) => {
 		});
 		dispatch(setAlertAction(res.data.msg, "success"));
 	} catch (err) {
-		console.log(err);
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err?.response.data,
+				status: err.response.status,
+			},
+		});
 	}
 };
 

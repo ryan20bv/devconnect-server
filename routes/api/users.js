@@ -9,6 +9,7 @@ const config = require("config");
 const jwtSecret = config.get("jwtSecret");
 const authMiddleware = require("../../middleware/authMiddleware");
 const ProfileModel = require("../../models/ProfileModel");
+const PostModel = require("../../models/PostModel");
 
 /* 
 	! @serverRoute    GET api/users
@@ -94,13 +95,14 @@ UserRouter.post(
 /* 
 	! @UserRoute    DELETE api/users
 	!	@additionalRoute /delete
-	* @desc         DELETE user and user profile
+	* @desc         DELETE user and user profile and all post
 	? @access       Private needs authMiddleware
  */
 
 UserRouter.delete("/delete", authMiddleware, async (req, res) => {
 	try {
 		// todo: delete post
+		await PostModel.deleteMany({ userId: req.user.id });
 		// * delete profile of the user
 		let profile = await ProfileModel.findOne({ userId: req.user.id });
 		if (profile) {
