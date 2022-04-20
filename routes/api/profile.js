@@ -14,13 +14,13 @@ const axios = require("axios").default;
 	? @access       Public 
 */
 
-ProfileRouter.get("/", async (req, res) => {
+ProfileRouter.get("/allprofile", async (req, res) => {
 	try {
 		const profiles = await ProfileModel.find().populate("userId", [
 			"name",
 			"avatar",
 		]);
-		res.send(profiles);
+		res.send({ profiles });
 	} catch (error) {
 		console.log(error.message);
 		res.status(500).send("Network Error");
@@ -40,14 +40,14 @@ ProfileRouter.get("/user/:user_id", async (req, res) => {
 			userId: req.params.user_id,
 		}).populate("userId", ["name", "avatar"]);
 		if (!profile) {
-			return res.status(400).json({ errors: [{ msg: "Profile not found!" }] });
+			return res.status(400).json({ errors: { msg: "Profile not found!" } });
 		}
 
-		res.send(profile);
+		res.send({ profile });
 	} catch (error) {
 		console.log(error.message);
 		if (error.kind == "ObjectId") {
-			return res.status(400).json({ errors: [{ msg: "Profile not found!" }] });
+			return res.status(400).json({ errors: { msg: "Profile not found!" } });
 		}
 		res.status(500).send("Network Error");
 	}

@@ -6,10 +6,8 @@ import PropTypes from "prop-types";
 import { getCurrentProfileAction } from "../../redux/actions/profileAction.js";
 import Spinner from "../layout/spinner.jsx";
 import Alert from "../layout/alert";
-import DashAction from "./dashAction";
+
 import Profile from "./profile.jsx";
-import Experience from "./Experience.jsx";
-import Education from "./Education.jsx";
 import ModalLayout from "../layout/ModalLayout.jsx";
 import { deleteAccountAction } from "../../redux/actions/authAction.js";
 
@@ -51,14 +49,7 @@ const Dashboard = ({
 				</React.Fragment>
 			) : (
 				<React.Fragment>
-					<DashAction />
-					<Profile userProfile={profile} />
-					{profile.experience.length > 0 && (
-						<Experience experience={profile.experience} />
-					)}
-					{profile.education.length > 0 && (
-						<Education education={profile.education} />
-					)}
+					<Profile userProfile={profile} authUser={user} />
 				</React.Fragment>
 			)}
 

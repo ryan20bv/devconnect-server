@@ -5,6 +5,8 @@ import {
 	UPDATE_PROFILE,
 	DELETE_EXPERIENCE,
 	DELETE_EDUCATION,
+	GET_ALL_PROFILE,
+	GET_REPOS,
 } from "../actions/types";
 
 const initialState = {
@@ -25,6 +27,18 @@ const profileReducer = (state = initialState, action) => {
 			return {
 				...state,
 				profile: payload,
+				loading: false,
+			};
+		case GET_ALL_PROFILE:
+			return {
+				...state,
+				profiles: payload,
+				loading: false,
+			};
+		case GET_REPOS:
+			return {
+				...state,
+				repos: payload,
 				loading: false,
 			};
 		case PROFILE_ERROR:

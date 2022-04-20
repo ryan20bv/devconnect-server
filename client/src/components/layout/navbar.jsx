@@ -9,6 +9,9 @@ const Navbar = ({ auth, logoutAction }) => {
 	const authLinks = (
 		<ul>
 			<li>
+				<Link to='/profiles'>Developers</Link>
+			</li>
+			<li>
 				<Link to='/dashboard'>
 					<i className='fas fa-user' />{" "}
 					<span className='hide-sm'>Dashboard</span>
@@ -26,7 +29,7 @@ const Navbar = ({ auth, logoutAction }) => {
 	const guestLinks = (
 		<ul>
 			<li>
-				<Link to='#!'>Developers</Link>
+				<Link to='/profiles'>Developers</Link>
 			</li>
 			<li>
 				<Link to='/register'>Register</Link>
@@ -43,6 +46,7 @@ const Navbar = ({ auth, logoutAction }) => {
 					<i className='fas fa-code'></i> DevConnector
 				</Link>
 			</h1>
+
 			{!loading && (
 				<React.Fragment>
 					{isAuthenticated ? authLinks : guestLinks}

@@ -2,9 +2,14 @@ import React from "react";
 import Moment from "react-moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { deleteExperienceAction } from "../../redux/actions/profileAction";
+import { deleteExperienceAction } from "../../../redux/actions/profileAction";
 
-const Experience = ({ experience, deleteExperienceAction }) => {
+const Experience = ({
+	experience,
+	deleteExperienceAction,
+	authId,
+	userProfileId,
+}) => {
 	const deleteHandler = (id) => {
 		deleteExperienceAction(id);
 	};
@@ -20,11 +25,16 @@ const Experience = ({ experience, deleteExperienceAction }) => {
 					{"  "} - {"  "}
 					{current ? "current" : <Moment format='D MMM YYYY'>{to}</Moment>}
 				</td>
-				<td>
-					<button className='btn btn-danger' onClick={() => deleteHandler(_id)}>
-						Delete
-					</button>
-				</td>
+				{authId === userProfileId && (
+					<td>
+						<button
+							className='btn btn-danger'
+							onClick={() => deleteHandler(_id)}
+						>
+							Delete
+						</button>
+					</td>
+				)}
 			</tr>
 		);
 	});

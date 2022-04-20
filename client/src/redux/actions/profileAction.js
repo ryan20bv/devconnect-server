@@ -6,6 +6,9 @@ import {
 	PROFILE_ERROR,
 	DELETE_EXPERIENCE,
 	DELETE_EDUCATION,
+	CLEAR_PROFILE,
+	GET_ALL_PROFILE,
+	GET_REPOS,
 } from "./types";
 
 const getCurrentProfileAction = () => async (dispatch) => {
@@ -13,6 +16,65 @@ const getCurrentProfileAction = () => async (dispatch) => {
 		const res = await axios.get("http://localhost:5000/api/profile/me");
 		dispatch({
 			type: GET_PROFILE,
+			payload: res.data,
+		});
+	} catch (err) {
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err?.response.data.error.msg,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
+const getAllProfileAction = () => async (dispatch) => {
+	dispatch({ type: CLEAR_PROFILE });
+	try {
+		const res = await axios.get("http://localhost:5000/api/profile/allprofile");
+		dispatch({
+			type: GET_ALL_PROFILE,
+			payload: res.data.profiles,
+		});
+	} catch (err) {
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err?.response.data.error.msg,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
+const getProfileByUserIdAction = (userId) => async (dispatch) => {
+	try {
+		const res = await axios.get(
+			"http://localhost:5000/api/profile/user/" + userId
+		);
+		dispatch({
+			type: GET_PROFILE,
+			payload: res.data.profile,
+		});
+	} catch (err) {
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err?.response.data.errors.msg,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
+const getGithubByNameAction = (githubName) => async (dispatch) => {
+	try {
+		const res = await axios.get(
+			"http://localhost:5000/api/profile/github/" + githubName
+		);
+		dispatch({
+			type: GET_REPOS,
 			payload: res.data,
 		});
 	} catch (err) {
@@ -169,4 +231,7 @@ export {
 	newEducationAction,
 	deleteExperienceAction,
 	deleteEducationAction,
+	getAllProfileAction,
+	getProfileByUserIdAction,
+	getGithubByNameAction,
 };
