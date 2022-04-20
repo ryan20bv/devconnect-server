@@ -20,7 +20,7 @@ ProfileRouter.get("/allprofile", async (req, res) => {
 			"name",
 			"avatar",
 		]);
-		res.send({ profiles });
+		res.send({ profiles, loading: false });
 	} catch (error) {
 		console.log(error.message);
 		res.status(500).send("Network Error");
@@ -43,7 +43,7 @@ ProfileRouter.get("/user/:user_id", async (req, res) => {
 			return res.status(400).json({ errors: { msg: "Profile not found!" } });
 		}
 
-		res.send({ profile });
+		res.send({ profile, loading: false });
 	} catch (error) {
 		console.log(error.message);
 		if (error.kind == "ObjectId") {
@@ -92,15 +92,15 @@ ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 	try {
 		//req.user is from authMiddleware
 		// console.log('req.user');
-		const userProfile = await ProfileModel.findOne({
+		const profile = await ProfileModel.findOne({
 			userId: req.user.id,
 		}).populate("userId", ["name", "avatar"]);
-		if (!userProfile) {
+		if (!profile) {
 			return res
 				.status(400)
 				.json({ error: { msg: "There is no profile for this user!" } });
 		}
-		res.send(userProfile);
+		res.send({ profile, loading: false });
 	} catch (error) {
 		// console.log(error.message);
 		res.status(500).send("Network Error");
@@ -167,7 +167,7 @@ ProfileRouter.post(
 					profileFields,
 					{ new: true }
 				);
-				return res.send({ profile, msg: "created" });
+				return res.send({ profile, msg: "created", loading: false });
 			} else if (!profile) {
 				profile = new ProfileModel(profileFields);
 				await profile.save();
@@ -236,7 +236,7 @@ ProfileRouter.put(
 			// );
 			profile.experience.unshift(newExperience);
 			await profile.save();
-			res.send({ profile, msg: "success" });
+			res.send({ profile, msg: "success", loading: false });
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Network Error");
@@ -300,7 +300,7 @@ ProfileRouter.put(
 			// );
 			profile.education.unshift(newEducation);
 			await profile.save();
-			res.send({ profile, msg: "success" });
+			res.send({ profile, msg: "success", loading: false });
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Network Error");
@@ -356,7 +356,7 @@ ProfileRouter.delete(
 			// );
 			profile.experience = [...newExperiences];
 			await profile.save();
-			res.send({ profile, msg: "Experience deleted" });
+			res.send({ profile, msg: "Experience deleted", loading: false });
 		} catch (error) {
 			console.log(error.message);
 			if (error.kind == "ObjectId") {
@@ -395,7 +395,7 @@ ProfileRouter.delete(
 			// );
 			profile.education = [...newEducations];
 			await profile.save();
-			res.send({ profile, msg: "Education deleted" });
+			res.send({ profile, msg: "Education deleted", loading: false });
 		} catch (error) {
 			console.log(error.message);
 			if (error.kind == "ObjectId") {

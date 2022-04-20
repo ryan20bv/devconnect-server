@@ -16,3 +16,4 @@ export const PROFILE_ERROR = "PROFILE_ERROR";
 export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
 export const GET_ALL_PROFILE = "GET_ALL_PROFILE";
 export const GET_REPOS = "GET_REPOS";
+export const SET_LOADING = "SET_LOADING";

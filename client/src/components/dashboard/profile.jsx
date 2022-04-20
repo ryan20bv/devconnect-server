@@ -7,9 +7,10 @@ import Education from "./profilePage/Education";
 
 const Profile = ({ userProfile, authUser }) => {
 	const { experience, education } = userProfile;
+	const authId = authUser !== null ? authUser._id : "";
 	return (
 		<React.Fragment>
-			{authUser._id === userProfile.userId._id && <DashAction />}
+			{authId === userProfile.userId._id && <DashAction />}
 			{/* <DashAction /> */}
 
 			<div className='profile-grid my-1'>
@@ -19,14 +20,14 @@ const Profile = ({ userProfile, authUser }) => {
 			{experience.length > 0 && (
 				<Experience
 					experience={experience}
-					authId={authUser._id}
+					authId={authId}
 					userProfileId={userProfile.userId._id}
 				/>
 			)}
 			{education.length > 0 && (
 				<Education
 					education={education}
-					authId={authUser._id}
+					authId={authId}
 					userProfileId={userProfile.userId._id}
 				/>
 			)}

@@ -1,11 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutAction } from "../../redux/actions/authAction.js";
 import PropTypes from "prop-types";
 
 const Navbar = ({ auth, logoutAction }) => {
 	const { isAuthenticated, loading } = auth;
+	const logoutHandler = async () => {
+		await logoutAction();
+		return <Navigate to='/login' />;
+	};
 	const authLinks = (
 		<ul>
 			<li>
@@ -18,7 +22,7 @@ const Navbar = ({ auth, logoutAction }) => {
 				</Link>
 			</li>
 			<li>
-				<a onClick={logoutAction} href='#!'>
+				<a onClick={() => logoutHandler()} href='#!'>
 					<i className='fas fa-sign-out-alt' />{" "}
 					<span className='hide-sm'>Logout</span>
 				</a>

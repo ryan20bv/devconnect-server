@@ -13,7 +13,7 @@ const Profiles = ({ getAllProfileAction, profileState }) => {
 
 	return (
 		<React.Fragment>
-			{loading ? (
+			{loading || profiles === null ? (
 				<Spinner />
 			) : (
 				<section className='container'>

@@ -19,7 +19,7 @@ AuthRouter.get("/", authMiddleware, async (req, res) => {
 	try {
 		// user.id is from AuthMiddleware
 		const user = await UserModel.findById(req.user.id).select("-password");
-		res.send(user);
+		res.send({ user, loading: false });
 	} catch (error) {
 		// console.log(error.message);
 		res.status(500).send({ errors: [{ msg: "Server error!" }] });
@@ -78,7 +78,7 @@ AuthRouter.post(
 
 			jwt.sign(payload, jwtSecret, { expiresIn: "5h" }, (err, token) => {
 				if (err) throw err;
-				res.json({ token: token, msg: "success" });
+				res.json({ token: token, msg: "success", loading: false });
 			});
 			// res.send("auth");
 		} catch (error) {

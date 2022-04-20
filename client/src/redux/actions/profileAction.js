@@ -9,9 +9,12 @@ import {
 	CLEAR_PROFILE,
 	GET_ALL_PROFILE,
 	GET_REPOS,
+	SET_LOADING,
 } from "./types";
 
 const getCurrentProfileAction = () => async (dispatch) => {
+	dispatch({ type: CLEAR_PROFILE });
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.get("http://localhost:5000/api/profile/me");
 		dispatch({
@@ -31,11 +34,12 @@ const getCurrentProfileAction = () => async (dispatch) => {
 
 const getAllProfileAction = () => async (dispatch) => {
 	dispatch({ type: CLEAR_PROFILE });
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.get("http://localhost:5000/api/profile/allprofile");
 		dispatch({
 			type: GET_ALL_PROFILE,
-			payload: res.data.profiles,
+			payload: res.data,
 		});
 	} catch (err) {
 		dispatch({
@@ -49,13 +53,14 @@ const getAllProfileAction = () => async (dispatch) => {
 };
 
 const getProfileByUserIdAction = (userId) => async (dispatch) => {
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.get(
 			"http://localhost:5000/api/profile/user/" + userId
 		);
 		dispatch({
 			type: GET_PROFILE,
-			payload: res.data.profile,
+			payload: res.data,
 		});
 	} catch (err) {
 		dispatch({
@@ -69,6 +74,7 @@ const getProfileByUserIdAction = (userId) => async (dispatch) => {
 };
 
 const getGithubByNameAction = (githubName) => async (dispatch) => {
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.get(
 			"http://localhost:5000/api/profile/github/" + githubName
@@ -91,6 +97,7 @@ const getGithubByNameAction = (githubName) => async (dispatch) => {
 const createProfileAction =
 	(profileData, edit = false) =>
 	async (dispatch) => {
+		dispatch({ type: SET_LOADING });
 		try {
 			const res = await axios.post(
 				"http://localhost:5000/api/profile/create",
@@ -125,6 +132,7 @@ const createProfileAction =
 	};
 
 const newExperienceAction = (experienceData) => async (dispatch) => {
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.put(
 			"http://localhost:5000/api/profile/user/experience",
@@ -132,7 +140,7 @@ const newExperienceAction = (experienceData) => async (dispatch) => {
 		);
 		dispatch({
 			type: UPDATE_PROFILE,
-			payload: res.data.profile,
+			payload: res.data,
 		});
 		dispatch(setAlertAction("Experience added", "success"));
 		return res.data.msg;
@@ -154,6 +162,7 @@ const newExperienceAction = (experienceData) => async (dispatch) => {
 };
 
 const newEducationAction = (educationData) => async (dispatch) => {
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.put(
 			"http://localhost:5000/api/profile/user/education",
@@ -161,7 +170,7 @@ const newEducationAction = (educationData) => async (dispatch) => {
 		);
 		dispatch({
 			type: UPDATE_PROFILE,
-			payload: res.data.profile,
+			payload: res.data,
 		});
 		dispatch(setAlertAction("Education added", "success"));
 		return res.data.msg;
@@ -183,13 +192,14 @@ const newEducationAction = (educationData) => async (dispatch) => {
 };
 
 const deleteExperienceAction = (id) => async (dispatch) => {
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.delete(
 			"http://localhost:5000/api/profile/user/experience/" + id
 		);
 		dispatch({
 			type: DELETE_EXPERIENCE,
-			payload: res.data.profile,
+			payload: res.data,
 		});
 		dispatch(setAlertAction(res.data.msg, "success"));
 	} catch (err) {
@@ -204,13 +214,14 @@ const deleteExperienceAction = (id) => async (dispatch) => {
 };
 
 const deleteEducationAction = (id) => async (dispatch) => {
+	dispatch({ type: SET_LOADING });
 	try {
 		const res = await axios.delete(
 			"http://localhost:5000/api/profile/user/education/" + id
 		);
 		dispatch({
 			type: DELETE_EDUCATION,
-			payload: res.data.profile,
+			payload: res.data,
 		});
 		dispatch(setAlertAction(res.data.msg, "success"));
 	} catch (err) {

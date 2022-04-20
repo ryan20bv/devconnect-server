@@ -20,6 +20,7 @@ const DevProfile = ({ getProfileByUserIdAction, profileState, authState }) => {
 			) : (
 				<React.Fragment>
 					<Profile userProfile={profile} authUser={user} />
+					{/* <div>Profile</div> */}
 				</React.Fragment>
 			)}
 		</section>
