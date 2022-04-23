@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getProfileByUserIdAction } from "../../redux/actions/profileAction";
@@ -19,6 +19,9 @@ const DevProfile = ({ getProfileByUserIdAction, profileState, authState }) => {
 				<Spinner />
 			) : (
 				<React.Fragment>
+					<Link className='btn btn-primary my-1' to='/profiles'>
+						Go Back
+					</Link>
 					<Profile userProfile={profile} authUser={user} />
 					{/* <div>Profile</div> */}
 				</React.Fragment>

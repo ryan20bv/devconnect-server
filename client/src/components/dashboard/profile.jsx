@@ -4,9 +4,10 @@ import Main from "./profilePage/Main";
 import About from "./profilePage/About";
 import Experience from "./profilePage/Experience";
 import Education from "./profilePage/Education";
+import Github from "./profilePage/Github";
 
 const Profile = ({ userProfile, authUser }) => {
-	const { experience, education } = userProfile;
+	const { experience, education, githubusername } = userProfile;
 	const authId = authUser !== null ? authUser._id : "";
 	return (
 		<React.Fragment>
@@ -31,6 +32,7 @@ const Profile = ({ userProfile, authUser }) => {
 					userProfileId={userProfile.userId._id}
 				/>
 			)}
+			<Github githubusername={githubusername} />
 		</React.Fragment>
 	);
 };

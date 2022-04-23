@@ -54,30 +54,38 @@ ProfileRouter.get("/user/:user_id", async (req, res) => {
 });
 
 /* 
-	* @desc         Get profile in github by username
+	* @desc         Get profile in github by githubName
 	! @serverRoute    Get api/profile
-	!	@additionalRoute /github/:username
+	!	@additionalRoute /github/:githubName
 	? @access       Public
 */
 
-ProfileRouter.get("/github/:username", async (req, res) => {
+ProfileRouter.get("/github/:githubName", async (req, res) => {
 	try {
-		// headers: {'user-agent': 'node.js'}
 		const response = await axios({
 			url: `https://api.github.com/users/${
-				req.params.username
+				req.params.githubName
 			}/repos?per_page=5&sort=created:asc&client_id=${config.get(
 				"githubClientId"
 			)}&client_secret=${config.get("githubSecret")}`,
 			method: "get",
+			headers: { "user-agent": "node.js" },
 		});
-		if (response.data.length === 0) {
-			return res.send({ msg: "No projects found!" });
+
+		const { status, data } = response;
+		// console.log("status", status);
+		// console.log("data", data);
+		if (status !== 200) {
+			return res.status(404).send({ error: { msg: "No github found!" } });
+		} else {
+			if (data.length === 0) {
+				return res.send({ error: { msg: "No projects found!" } });
+			}
+			res.send(data);
 		}
-		res.send(response.data);
 	} catch (error) {
-		console.log(error.message);
-		res.status(404).send({ msg: "No github profile found!" });
+		// console.log("error", error);
+		res.status(404).send({ error: { msg: "No github profile found!" } });
 	}
 });
 

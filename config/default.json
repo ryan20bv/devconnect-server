@@ -2,5 +2,5 @@
 	"mongoURI": "mongodb+srv://admin:admin@cluster0.2qn5b.mongodb.net/devconnect?retryWrites=true&w=majority",
 	"jwtSecret": "lucky-lucky",
 	"githubClientId": "9c42ee7c80b3461ffbc3",
-	"githubSecret": "fed0cb9190c7f01534015f263ff6acd6bba5f155"
+	"githubSecret": "4a060846f615490960f86ae259ec111d858d7355"
 }
