@@ -17,7 +17,7 @@ PostsRouter.get("/", authMiddleware, async (req, res) => {
 	try {
 		const posts = await PostModel.find().sort({ date: -1 });
 		if (!posts) {
-			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			return res.status(400).json({ errors: { msg: "Posts not found!" } });
 		}
 		res.status(200).send(posts);
 	} catch (error) {
@@ -61,12 +61,12 @@ PostsRouter.get("/post/:post_id", authMiddleware, async (req, res) => {
 	try {
 		const post = await PostModel.findById(req.params.post_id);
 		if (!post) {
-			return res.status(400).json({ errors: [{ msg: "Post not found!" }] });
+			return res.status(400).json({ error: { msg: "Post not found!" } });
 		}
 		res.status(200).send(post);
 	} catch (error) {
 		if (error.kind == "ObjectId") {
-			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			return res.status(400).json({ error: { msg: "Posts not found!" } });
 		}
 		res.status(500).send("Post Network Error");
 	}

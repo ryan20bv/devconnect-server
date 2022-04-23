@@ -106,7 +106,7 @@ ProfileRouter.get("/me", authMiddleware, async (req, res) => {
 		if (!profile) {
 			return res
 				.status(400)
-				.json({ error: { msg: "There is no profile for this user!" } });
+				.send({ error: { msg: "There is no profile for this user!" } });
 		}
 		res.send({ profile, loading: false });
 	} catch (error) {

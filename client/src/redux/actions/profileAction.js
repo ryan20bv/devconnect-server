@@ -25,7 +25,7 @@ const getCurrentProfileAction = () => async (dispatch) => {
 		dispatch({
 			type: PROFILE_ERROR,
 			payload: {
-				msg: err?.response.data.error.msg,
+				msg: err.response.data.error.msg,
 				status: err.response.status,
 			},
 		});

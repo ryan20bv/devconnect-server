@@ -1,11 +1,11 @@
 import React from "react";
 
-const Social = ({ social }) => {
+const Social = ({ social, website }) => {
 	return (
 		<React.Fragment>
 			<div className='icons my-1'>
-				{social.globe && (
-					<a href={social.globe} target='_blank' rel='noopener noreferrer'>
+				{website && (
+					<a href={website} target='_blank' rel='noopener noreferrer'>
 						<i className='fas fa-globe fa-2x'></i>
 					</a>
 				)}

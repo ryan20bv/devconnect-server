@@ -32,7 +32,17 @@ const Profile = ({ userProfile, authUser }) => {
 					userProfileId={userProfile.userId._id}
 				/>
 			)}
-			<Github githubusername={githubusername} />
+
+			<div className='profile-github'>
+				<h2 className='text-primary my-1'>
+					<i className='fab fa-github'></i> Github Repos
+				</h2>
+				{githubusername ? (
+					<Github githubusername={githubusername} />
+				) : (
+					<h1>No github profile</h1>
+				)}
+			</div>
 		</React.Fragment>
 	);
 };

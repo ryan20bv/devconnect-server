@@ -17,7 +17,9 @@ const GithubRepos = ({ repo }) => {
 						<li className='badge badge-primary'>
 							Stars: {repo.stargazers_count}
 						</li>
-						<li className='badge badge-dark'>Watchers: {repo.watchers}</li>
+						<li className='badge badge-dark'>
+							Watchers: {repo.watchers_count}
+						</li>
 						<li className='badge badge-light'>Forks: {repo.forks_count}</li>
 					</ul>
 				</div>

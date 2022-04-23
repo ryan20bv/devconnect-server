@@ -10,11 +10,7 @@ const Github = ({ githubusername, profileState, getGithubByNameAction }) => {
 	}, [getGithubByNameAction]);
 	const { error, repos } = profileState;
 	return (
-		<div className='profile-github'>
-			<h2 className='text-primary my-1'>
-				<i className='fab fa-github'></i> Github Repos
-			</h2>
-
+		<React.Fragment>
 			{error === null ? (
 				repos.error || repos.length === 0 ? (
 					<h1>{repos.error.msg}</h1>
@@ -30,7 +26,7 @@ const Github = ({ githubusername, profileState, getGithubByNameAction }) => {
 					<h1>{error.msg}</h1>
 				</React.Fragment>
 			)}
-		</div>
+		</React.Fragment>
 	);
 };
 

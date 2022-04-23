@@ -17,3 +17,6 @@ export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
 export const GET_ALL_PROFILE = "GET_ALL_PROFILE";
 export const GET_REPOS = "GET_REPOS";
 export const SET_LOADING = "SET_LOADING";
+export const GET_ALL_POST = "GET_ALL_POST";
+export const POST_ERROR = "POST_ERROR";
+export const GET_POST = "GET_POST";

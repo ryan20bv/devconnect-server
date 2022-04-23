@@ -36,6 +36,10 @@ const Profiles = React.lazy(() =>
 const DevProfile = React.lazy(() =>
 	import("./components/dashboard/DevProfile.jsx")
 );
+const Posts = React.lazy(() => import("./components/dashboard/Posts.jsx"));
+const Post = React.lazy(() =>
+	import("./components/dashboard/postsPage/Post.jsx")
+);
 
 if (localStorage.token) {
 	authToken(localStorage);
@@ -122,6 +126,22 @@ const App = () => {
 							element={
 								<React.Suspense fallback={<>...</>}>
 									<AddEducation />
+								</React.Suspense>
+							}
+						/>
+						<Route
+							path='/posts'
+							element={
+								<React.Suspense fallback={<>...</>}>
+									<Posts />
+								</React.Suspense>
+							}
+						/>
+						<Route
+							path='/post/:postId'
+							element={
+								<React.Suspense fallback={<>...</>}>
+									<Post />
 								</React.Suspense>
 							}
 						/>

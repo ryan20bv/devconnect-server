@@ -41,6 +41,7 @@ const Education = ({
 
 	return (
 		// <!-- Education -->
+
 		<div className='profile-edu bg-white p-2'>
 			<h2 className='my-2'>Education Credentials</h2>
 			<table className='table'>

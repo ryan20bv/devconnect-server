@@ -49,7 +49,7 @@ const Dashboard = ({
 				</React.Fragment>
 			) : (
 				<React.Fragment>
-					<Profile userProfile={profile} authUser={user} />
+					{profile && <Profile userProfile={profile} authUser={user} />}
 				</React.Fragment>
 			)}
 
