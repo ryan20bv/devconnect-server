@@ -16,7 +16,10 @@ const Navbar = ({ auth, logoutAction }) => {
 				<Link to='/profiles'>Developers</Link>
 			</li>
 			<li>
-				<Link to='/posts'>Posts</Link>
+				<Link to='/posts'>All Posts</Link>
+			</li>
+			<li>
+				<Link to='/mypost'>My Post</Link>
 			</li>
 			<li>
 				<Link to='/dashboard'>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Moment from "react-moment";
-import { Link, useParams, Navigate } from "react-router-dom";
+import { Link, useParams, Navigate, useNavigate } from "react-router-dom";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import { connect } from "react-redux";
@@ -18,7 +18,7 @@ const Post = ({ getPostAction, postState, authState }) => {
 	// const { name, avatar, text, date, comments } = post;
 
 	const formattedDate = <Moment format='D MMM YYYY'>{post?.date}</Moment>;
-
+	const navigate = useNavigate();
 	if (!isAuthenticated) {
 		return <Navigate to='/login' />;
 	}
@@ -29,9 +29,9 @@ const Post = ({ getPostAction, postState, authState }) => {
 
 	return (
 		<section className='container'>
-			<Link to='/posts' className='btn'>
-				Back To Posts
-			</Link>
+			<button className='btn btn-primary my-1' onClick={() => navigate(-1)}>
+				Go back
+			</button>
 			<div className='post bg-white p-1 my-1'>
 				<div>
 					<a href='profile.html'>

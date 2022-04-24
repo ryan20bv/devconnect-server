@@ -41,6 +41,10 @@ const Post = React.lazy(() =>
 	import("./components/dashboard/postsPage/Post.jsx")
 );
 
+const MyPost = React.lazy(() =>
+	import("./components/dashboard/postsPage/MyPost.jsx")
+);
+
 if (localStorage.token) {
 	authToken(localStorage);
 }
@@ -142,6 +146,14 @@ const App = () => {
 							element={
 								<React.Suspense fallback={<>...</>}>
 									<Post />
+								</React.Suspense>
+							}
+						/>
+						<Route
+							path='/mypost'
+							element={
+								<React.Suspense fallback={<>...</>}>
+									<MyPost />
 								</React.Suspense>
 							}
 						/>

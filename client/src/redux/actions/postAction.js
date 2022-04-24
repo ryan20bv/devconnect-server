@@ -8,6 +8,7 @@ import {
 	SET_POST_LOADING,
 	UPDATE_POST,
 	CLEAR_POSTS,
+	GET_MY_POST,
 } from "../actions/types";
 
 import { setAlertAction } from "./alertAction";
@@ -19,6 +20,27 @@ const getAllPostAction = () => async (dispatch) => {
 		dispatch({
 			type: GET_ALL_POST,
 			payload: res.data,
+		});
+	} catch (err) {
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: err?.response.data.error.msg,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
+const getPostsByUserAction = (userId) => async (dispatch) => {
+	dispatch({ type: CLEAR_POSTS });
+	try {
+		const res = await axios.get(
+			`http://localhost:5000/api/posts/user/${userId}`
+		);
+		dispatch({
+			type: GET_MY_POST,
+			payload: res.data.mypost,
 		});
 	} catch (err) {
 		dispatch({
@@ -153,4 +175,5 @@ export {
 	newCommentAction,
 	deleteCommentAction,
 	deletePostAction,
+	getPostsByUserAction,
 };

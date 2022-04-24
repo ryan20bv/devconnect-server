@@ -6,6 +6,7 @@ import {
 	SET_POST_LOADING,
 	UPDATE_POST,
 	CLEAR_POSTS,
+	GET_MY_POST,
 } from "../actions/types";
 
 const initialState = {
@@ -24,6 +25,7 @@ const postReducer = (state = initialState, action) => {
 				loading: true,
 			};
 		case GET_ALL_POST:
+		case GET_MY_POST:
 			return {
 				...state,
 				posts: payload,

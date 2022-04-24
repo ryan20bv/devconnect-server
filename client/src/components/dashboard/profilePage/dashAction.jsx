@@ -13,8 +13,14 @@ function DashAction() {
 			<Link to='/add-education' className='btn btn-light'>
 				<i className='fas fa-graduation-cap text-primary'></i> Add Education
 			</Link>
+			<Link to='/mypost' className='btn btn-light'>
+				<i className='fas fa-solid fa-signs-post text-primary'></i> My Post
+			</Link>
 		</div>
 	);
 }
 
 export default DashAction;
+{
+	/* <i class='fa-solid fa-signs-post'></i>; */
+}

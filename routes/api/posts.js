@@ -35,16 +35,16 @@ PostsRouter.get("/", authMiddleware, async (req, res) => {
 
 PostsRouter.get("/user/:user_id", authMiddleware, async (req, res) => {
 	try {
-		const posts = await PostModel.find({ userId: req.params.user_id }).sort({
+		const mypost = await PostModel.find({ userId: req.params.user_id }).sort({
 			date: -1,
 		});
-		if (!posts) {
-			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+		if (!mypost) {
+			return res.status(400).json({ error: { msg: "Posts not found!" } });
 		}
-		res.status(200).send(posts);
+		res.status(200).send({ mypost });
 	} catch (error) {
 		if (error.kind == "ObjectId") {
-			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			return res.status(400).json({ error: { msg: "Posts not found!" } });
 		}
 		res.status(500).send("Post Network Error");
 	}

@@ -83,7 +83,6 @@ const getGithubByNameAction = (githubName) => async (dispatch) => {
 			payload: res.data,
 		});
 	} catch (err) {
-		console.log(err.response.data.error.msg);
 		dispatch({
 			type: PROFILE_ERROR,
 			payload: {
