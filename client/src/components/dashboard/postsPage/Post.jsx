@@ -42,14 +42,20 @@ const Post = ({ getPostAction, postState, authState }) => {
 				<div>
 					<p className='my-1'>{post?.text}</p>
 					<p className='post-date'>Posted on {formattedDate}</p>
-					<button className='btn btn-danger'>Delete</button>
+					{user._id === post?.userId && (
+						<button className='btn btn-danger'>Delete</button>
+					)}
 				</div>
 			</div>
 			<CommentForm />
 			{post?.comments.length > 0 ? (
 				<div className='comments'>
 					{post?.comments.map((comment) => (
-						<Comment key={comment._id} comment={comment} />
+						<Comment
+							key={comment._id}
+							comment={comment}
+							authUserId={user._id}
+						/>
 					))}
 				</div>
 			) : (

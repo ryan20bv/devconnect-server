@@ -103,5 +103,32 @@ const newCommentAction = (commentData, postId) => async (dispatch) => {
 		});
 	}
 };
+const deleteCommentAction = (commentId, postId) => async (dispatch) => {
+	try {
+		const res = await axios.put(
+			`http://localhost:5000/api/posts/comment/${postId}/delete/${commentId}`
+		);
+		// dispatch(getPostAction(postId));
+		dispatch({
+			type: UPDATE_POST,
+			payload: res.data.post,
+		});
+		dispatch(setAlertAction(res.data.msg, "success"));
+	} catch (err) {
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: err.response.data.errors,
+				status: err.response.status,
+			},
+		});
+	}
+};
 
-export { getAllPostAction, getPostAction, newPostAction, newCommentAction };
+export {
+	getAllPostAction,
+	getPostAction,
+	newPostAction,
+	newCommentAction,
+	deleteCommentAction,
+};

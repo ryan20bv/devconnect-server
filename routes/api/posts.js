@@ -248,18 +248,16 @@ PostsRouter.put(
 			});
 			// check if the user id of the comment is the user id that is deleting
 			if (commentToDelete.userId.toString() !== req.user.id) {
-				return res
-					.status(400)
-					.json({ errors: [{ msg: "user unAuthorized!" }] });
+				return res.status(400).json({ errors: { msg: "user unAuthorized!" } });
 			}
 			post.comments = post.comments.filter((comment) => {
 				return comment._id.toString() !== req.params.comment_id;
 			});
 			await post.save();
-			res.status(200).send(post.comments);
+			res.status(200).send({ post, msg: "deleted" });
 		} catch (error) {
 			if (error.kind == "ObjectId") {
-				return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+				return res.status(400).json({ errors: { msg: "Posts not found!" } });
 			}
 			res.status(500).send("Delete Comments Network Error");
 		}
