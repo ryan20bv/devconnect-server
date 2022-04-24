@@ -20,3 +20,5 @@ export const SET_LOADING = "SET_LOADING";
 export const GET_ALL_POST = "GET_ALL_POST";
 export const POST_ERROR = "POST_ERROR";
 export const GET_POST = "GET_POST";
+export const CLEAR_POST = "CLEAR_POST";
+export const SET_POST_LOADING = "SET_POST_LOADING";

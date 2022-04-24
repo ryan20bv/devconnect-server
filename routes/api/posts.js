@@ -75,13 +75,13 @@ PostsRouter.get("/post/:post_id", authMiddleware, async (req, res) => {
 /* 
 	* @desc        		Post post
 	! @serverRoute    Post api/posts
-	!	@additionalRoute /
+	!	@additionalRoute /newpost
 	? @access      		Private
 	* @desc        		needs auth and express validator
 */
 
 PostsRouter.post(
-	"/",
+	"/newpost",
 	[authMiddleware, [check("text", "Text is required!").not().isEmpty()]],
 	async (req, res) => {
 		const errors = validationResult(req);
@@ -97,7 +97,7 @@ PostsRouter.post(
 				avatar: user.avatar,
 			});
 			const post = await newPost.save();
-			res.status(200).send(post);
+			res.status(200).send({ post, msg: "Success" });
 		} catch (error) {
 			console.log(error.message);
 			res.status(500).send("Post Network Error");

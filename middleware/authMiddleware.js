@@ -8,13 +8,13 @@ module.exports = AuthMiddleware = function (req, res, next) {
 	if (!token) {
 		return res
 			.status(401)
-			.send({ errors: [{ msg: "No token, authorization denied!" }] });
+			.send({ error: { msg: "No token, authorization denied!" } });
 	}
 	try {
 		const decoded = jwt.verify(token, jwtSecret);
 		req.user = decoded.user;
 		next();
 	} catch (error) {
-		res.status(500).send({ errors: [{ msg: "Token is not valid!" }] });
+		res.status(500).send({ error: { msg: "Token is not valid!" } });
 	}
 };

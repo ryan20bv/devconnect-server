@@ -1,4 +1,11 @@
-import { GET_ALL_POST, POST_ERROR, GET_POST } from "../actions/types";
+import {
+	GET_ALL_POST,
+	POST_ERROR,
+	GET_POST,
+	CLEAR_POST,
+	SET_POST_LOADING,
+	NEW_POST,
+} from "../actions/types";
 
 const initialState = {
 	posts: [],
@@ -10,6 +17,11 @@ const initialState = {
 const postReducer = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
+		case SET_POST_LOADING:
+			return {
+				...state,
+				loading: true,
+			};
 		case GET_ALL_POST:
 			return {
 				...state,
@@ -27,6 +39,12 @@ const postReducer = (state = initialState, action) => {
 				...state,
 				loading: false,
 				error: payload,
+			};
+		case CLEAR_POST:
+			return {
+				...state,
+				post: null,
+				loading: false,
 			};
 		default:
 			return state;
