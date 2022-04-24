@@ -10,6 +10,8 @@ import {
 	CLEAR_POSTS,
 	GET_MY_POST,
 	UPDATE_LIKE,
+	DELETE_POST,
+	ADD_NEW_POST,
 } from "../actions/types";
 
 import { setAlertAction } from "./alertAction";
@@ -81,7 +83,10 @@ const newPostAction = (postData) => async (dispatch) => {
 			"http://localhost:5000/api/posts/newpost",
 			postData
 		);
-		dispatch(getAllPostAction());
+		dispatch({
+			type: ADD_NEW_POST,
+			payload: res.data,
+		});
 		dispatch(setAlertAction(res.data.msg, "success"));
 		return res.data.msg;
 	} catch (err) {
@@ -132,7 +137,6 @@ const deleteCommentAction = (commentId, postId) => async (dispatch) => {
 		const res = await axios.put(
 			`http://localhost:5000/api/posts/comment/${postId}/delete/${commentId}`
 		);
-		// dispatch(getPostAction(postId));
 		dispatch({
 			type: UPDATE_POST,
 			payload: res.data.post,
@@ -155,8 +159,10 @@ const deletePostAction = (postId) => async (dispatch) => {
 		const res = await axios.delete(
 			`http://localhost:5000/api/posts/delete/${postId}`
 		);
-		// dispatch(getPostAction(postId));
-		dispatch(getAllPostAction());
+		dispatch({
+			type: DELETE_POST,
+			payload: res.data,
+		});
 		dispatch(setAlertAction(res.data.msg, "success"));
 	} catch (err) {
 		dispatch({

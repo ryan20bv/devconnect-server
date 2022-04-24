@@ -73,7 +73,7 @@ PostsRouter.get("/post/:post_id", authMiddleware, async (req, res) => {
 });
 
 /* 
-	* @desc        		Post post
+	* @desc        		Post new post
 	! @serverRoute    Post api/posts
 	!	@additionalRoute /newpost
 	? @access      		Private
@@ -123,7 +123,7 @@ PostsRouter.delete("/delete/:post_id", authMiddleware, async (req, res) => {
 			return res.status(400).json({ error: { msg: "user unAuthorized!" } });
 		}
 		await post.remove();
-		res.status(200).send({ msg: "Post remove" });
+		res.status(200).send({ post, msg: "Post remove" });
 	} catch (error) {
 		if (error.kind == "ObjectId") {
 			return res.status(400).json({ error: { msg: "Posts not found!" } });

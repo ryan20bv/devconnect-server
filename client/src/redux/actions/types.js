@@ -26,3 +26,5 @@ export const UPDATE_POST = "UPDATE_POST";
 export const CLEAR_POSTS = "CLEAR_POSTS";
 export const GET_MY_POST = "GET_MY_POST";
 export const UPDATE_LIKE = "UPDATE_LIKE";
+export const DELETE_POST = "DELETE_POST";
+export const ADD_NEW_POST = "ADD_NEW_POST";

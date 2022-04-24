@@ -8,6 +8,8 @@ import {
 	CLEAR_POSTS,
 	GET_MY_POST,
 	UPDATE_LIKE,
+	DELETE_POST,
+	ADD_NEW_POST,
 } from "../actions/types";
 
 const initialState = {
@@ -30,6 +32,12 @@ const postReducer = (state = initialState, action) => {
 			return {
 				...state,
 				posts: payload,
+				loading: false,
+			};
+		case ADD_NEW_POST:
+			return {
+				...state,
+				posts: [payload.post, ...state.posts],
 				loading: false,
 			};
 		case GET_POST:
@@ -66,6 +74,12 @@ const postReducer = (state = initialState, action) => {
 						? { ...post, likes: payload.post.likes }
 						: post
 				),
+				loading: false,
+			};
+		case DELETE_POST:
+			return {
+				...state,
+				posts: state.posts.filter((post) => post._id !== payload.post._id),
 				loading: false,
 			};
 		default:
