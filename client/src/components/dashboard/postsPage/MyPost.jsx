@@ -27,7 +27,7 @@ const MyPost = ({ getPostsByUserAction, authState, postState }) => {
 		<section className='container'>
 			<h1 className='large text-primary'>My Posts</h1>
 			<p className='lead'>
-				<i className='fas fa-user'></i> Welcome to the community!
+				<i className='fas fa-user'></i> Welcome {user.name}!
 			</p>
 			<button className='btn btn-primary my-1' onClick={() => navigate(-1)}>
 				Go back

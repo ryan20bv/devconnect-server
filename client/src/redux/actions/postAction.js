@@ -161,10 +161,48 @@ const deletePostAction = (postId) => async (dispatch) => {
 		dispatch({
 			type: POST_ERROR,
 			payload: {
-				msg: err.response.data.errors,
+				msg: err.response.data.error,
 				status: err.response.status,
 			},
 		});
+	}
+};
+
+const likePostAction = (postId) => async (dispatch) => {
+	try {
+		const res = await axios.put(
+			`http://localhost:5000/api/posts/like/${postId}`
+		);
+		dispatch(getAllPostAction());
+		dispatch(setAlertAction(res.data.msg, "success"));
+	} catch (err) {
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: err.response.data.error.msg,
+				status: err.response.status,
+			},
+		});
+		dispatch(setAlertAction(err.response.data.error.msg, "danger"));
+	}
+};
+
+const unlikePostAction = (postId) => async (dispatch) => {
+	try {
+		const res = await axios.put(
+			`http://localhost:5000/api/posts/unlike/${postId}`
+		);
+		dispatch(getAllPostAction());
+		dispatch(setAlertAction(res.data.msg, "danger"));
+	} catch (err) {
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: err.response.data.error.msg,
+				status: err.response.status,
+			},
+		});
+		dispatch(setAlertAction(err.response.data.error.msg, "danger"));
 	}
 };
 
@@ -176,4 +214,6 @@ export {
 	deleteCommentAction,
 	deletePostAction,
 	getPostsByUserAction,
+	likePostAction,
+	unlikePostAction,
 };

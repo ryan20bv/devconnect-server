@@ -120,13 +120,13 @@ PostsRouter.delete("/delete/:post_id", authMiddleware, async (req, res) => {
 			return res.status(400).json({ errors: { msg: "Post not found!" } });
 		}
 		if (post.userId.toString() !== req.user.id) {
-			return res.status(400).json({ errors: { msg: "user unAuthorized!" } });
+			return res.status(400).json({ error: { msg: "user unAuthorized!" } });
 		}
 		await post.remove();
 		res.status(200).send({ msg: "Post remove" });
 	} catch (error) {
 		if (error.kind == "ObjectId") {
-			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			return res.status(400).json({ error: { msg: "Posts not found!" } });
 		}
 		res.status(500).send("Post Network Error");
 	}
@@ -146,14 +146,14 @@ PostsRouter.put("/like/:post_id", authMiddleware, async (req, res) => {
 			return like.userId.toString() === req.user.id;
 		});
 		if (user.length > 0) {
-			return res.status(400).send("Already liked!");
+			return res.status(400).send({ error: { msg: "Already liked!" } });
 		}
 		post.likes.unshift({ userId: req.user.id });
 		await post.save();
-		res.status(200).send(post.likes);
+		res.status(200).send({ post, msg: "liked!" });
 	} catch (error) {
 		if (error.kind == "ObjectId") {
-			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			return res.status(400).json({ error: { msg: "Posts not found!" } });
 		}
 		res.status(500).send("Likes Network Error");
 	}
@@ -173,16 +173,16 @@ PostsRouter.put("/unlike/:post_id", authMiddleware, async (req, res) => {
 			return like.userId.toString() === req.user.id;
 		});
 		if (user.length === 0) {
-			return res.status(400).send("Not yet liked!");
+			return res.status(400).send({ error: { msg: "Not yet liked!" } });
 		}
 		post.likes = post.likes.filter((like) => {
 			return like.userId.toString() !== req.user.id;
 		});
 		await post.save();
-		res.status(200).send("unlike post");
+		res.status(200).send({ post, msg: "unlike post" });
 	} catch (error) {
 		if (error.kind == "ObjectId") {
-			return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });
+			return res.status(400).json({ error: { msg: "Posts not found!" } });
 		}
 		res.status(500).send("Likes Network Error");
 	}
