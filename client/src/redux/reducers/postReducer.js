@@ -5,6 +5,7 @@ import {
 	CLEAR_POST,
 	SET_POST_LOADING,
 	UPDATE_POST,
+	CLEAR_POSTS,
 } from "../actions/types";
 
 const initialState = {
@@ -44,6 +45,13 @@ const postReducer = (state = initialState, action) => {
 		case CLEAR_POST:
 			return {
 				...state,
+				post: null,
+				loading: false,
+			};
+		case CLEAR_POSTS:
+			return {
+				...state,
+				posts: [],
 				post: null,
 				loading: false,
 			};

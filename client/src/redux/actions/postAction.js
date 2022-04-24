@@ -7,6 +7,7 @@ import {
 	CLEAR_POST,
 	SET_POST_LOADING,
 	UPDATE_POST,
+	CLEAR_POSTS,
 } from "../actions/types";
 
 import { setAlertAction } from "./alertAction";
@@ -125,10 +126,31 @@ const deleteCommentAction = (commentId, postId) => async (dispatch) => {
 	}
 };
 
+const deletePostAction = (postId) => async (dispatch) => {
+	// dispatch({ type: CLEAR_POSTS });
+	try {
+		const res = await axios.delete(
+			`http://localhost:5000/api/posts/delete/${postId}`
+		);
+		// dispatch(getPostAction(postId));
+		dispatch(getAllPostAction());
+		dispatch(setAlertAction(res.data.msg, "success"));
+	} catch (err) {
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: err.response.data.errors,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
 export {
 	getAllPostAction,
 	getPostAction,
 	newPostAction,
 	newCommentAction,
 	deleteCommentAction,
+	deletePostAction,
 };

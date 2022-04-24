@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { deletePostAction } from "../../../redux/actions/postAction";
 
-const PostsItem = ({ post, authUserId }) => {
+const PostsItem = ({ post, authUserId, deletePostAction }) => {
 	const formattedDate = <Moment format='D MMM YYYY'>{post.date}</Moment>;
+
+	const deletePostHandler = (postId) => {
+		deletePostAction(postId);
+	};
 	return (
 		<div className='post bg-white p-1 my-1'>
 			<div>
@@ -26,7 +32,11 @@ const PostsItem = ({ post, authUserId }) => {
 					<span className='comment-count'>{post.comments.length}</span>
 				</Link>
 				{authUserId === post.userId && (
-					<button type='button' className='btn btn-danger'>
+					<button
+						type='button'
+						className='btn btn-danger'
+						onClick={() => deletePostHandler(post._id)}
+					>
 						<i className='fas fa-times'></i>
 					</button>
 				)}
@@ -35,4 +45,4 @@ const PostsItem = ({ post, authUserId }) => {
 	);
 };
 
-export default PostsItem;
+export default connect(null, { deletePostAction })(PostsItem);

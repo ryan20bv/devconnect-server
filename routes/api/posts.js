@@ -117,10 +117,10 @@ PostsRouter.delete("/delete/:post_id", authMiddleware, async (req, res) => {
 	try {
 		let post = await PostModel.findById(req.params.post_id);
 		if (!post) {
-			return res.status(400).json({ errors: [{ msg: "Post not found!" }] });
+			return res.status(400).json({ errors: { msg: "Post not found!" } });
 		}
 		if (post.userId.toString() !== req.user.id) {
-			return res.status(400).json({ errors: [{ msg: "user unAuthorized!" }] });
+			return res.status(400).json({ errors: { msg: "user unAuthorized!" } });
 		}
 		await post.remove();
 		res.status(200).send({ msg: "Post remove" });
