@@ -216,7 +216,7 @@ PostsRouter.put(
 			let post = await PostModel.findById(req.params.post_id);
 			post.comments.unshift(newComment);
 			await post.save();
-			res.status(200).send(post.comments);
+			res.status(200).send({ post, msg: "Success" });
 		} catch (error) {
 			if (error.kind == "ObjectId") {
 				return res.status(400).json({ errors: [{ msg: "Posts not found!" }] });

@@ -6,6 +6,7 @@ import {
 	GET_POST,
 	CLEAR_POST,
 	SET_POST_LOADING,
+	UPDATE_POST,
 } from "../actions/types";
 
 import { setAlertAction } from "./alertAction";
@@ -76,4 +77,31 @@ const newPostAction = (postData) => async (dispatch) => {
 	}
 };
 
-export { getAllPostAction, getPostAction, newPostAction };
+const newCommentAction = (commentData, postId) => async (dispatch) => {
+	try {
+		const res = await axios.put(
+			`http://localhost:5000/api/posts/comment/${postId}`,
+			commentData
+		);
+		dispatch({ type: UPDATE_POST, payload: res.data.post });
+		dispatch(setAlertAction(res.data.msg, "success"));
+		return res.data.msg;
+	} catch (err) {
+		console.log(err.response.data);
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach((element) => {
+				dispatch(setAlertAction(element.msg, "danger"));
+			});
+		}
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: err.response.data.errors,
+				status: err.response.status,
+			},
+		});
+	}
+};
+
+export { getAllPostAction, getPostAction, newPostAction, newCommentAction };

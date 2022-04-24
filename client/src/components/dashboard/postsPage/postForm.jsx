@@ -42,7 +42,7 @@ const PostForm = ({ newPostAction }) => {
 	);
 };
 
-PostForm.prototype = {
+PostForm.propTypes = {
 	newPostAction: PropTypes.func.isRequired,
 };
 

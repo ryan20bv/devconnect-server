@@ -22,3 +22,4 @@ export const POST_ERROR = "POST_ERROR";
 export const GET_POST = "GET_POST";
 export const CLEAR_POST = "CLEAR_POST";
 export const SET_POST_LOADING = "SET_POST_LOADING";
+export const UPDATE_POST = "UPDATE_POST";
