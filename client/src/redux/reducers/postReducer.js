@@ -7,6 +7,7 @@ import {
 	UPDATE_POST,
 	CLEAR_POSTS,
 	GET_MY_POST,
+	UPDATE_LIKE,
 } from "../actions/types";
 
 const initialState = {
@@ -55,6 +56,16 @@ const postReducer = (state = initialState, action) => {
 				...state,
 				posts: [],
 				post: null,
+				loading: false,
+			};
+		case UPDATE_LIKE:
+			return {
+				...state,
+				posts: state.posts.map((post) =>
+					post._id === payload.postId
+						? { ...post, likes: payload.post.likes }
+						: post
+				),
 				loading: false,
 			};
 		default:

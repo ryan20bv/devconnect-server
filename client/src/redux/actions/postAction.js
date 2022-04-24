@@ -9,6 +9,7 @@ import {
 	UPDATE_POST,
 	CLEAR_POSTS,
 	GET_MY_POST,
+	UPDATE_LIKE,
 } from "../actions/types";
 
 import { setAlertAction } from "./alertAction";
@@ -173,7 +174,10 @@ const likePostAction = (postId) => async (dispatch) => {
 		const res = await axios.put(
 			`http://localhost:5000/api/posts/like/${postId}`
 		);
-		dispatch(getAllPostAction());
+		dispatch({
+			type: UPDATE_LIKE,
+			payload: { postId, post: res.data.post },
+		});
 		dispatch(setAlertAction(res.data.msg, "success"));
 	} catch (err) {
 		dispatch({
@@ -192,7 +196,10 @@ const unlikePostAction = (postId) => async (dispatch) => {
 		const res = await axios.put(
 			`http://localhost:5000/api/posts/unlike/${postId}`
 		);
-		dispatch(getAllPostAction());
+		dispatch({
+			type: UPDATE_LIKE,
+			payload: { postId, post: res.data.post },
+		});
 		dispatch(setAlertAction(res.data.msg, "danger"));
 	} catch (err) {
 		dispatch({
