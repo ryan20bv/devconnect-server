@@ -45,6 +45,10 @@ const MyPost = React.lazy(() =>
 	import("./components/dashboard/postsPage/MyPost.jsx")
 );
 
+const WildcardPage = React.lazy(() =>
+	import("./components/dashboard/WildcardPage")
+);
+
 if (localStorage.token) {
 	authToken(localStorage);
 }
@@ -61,6 +65,14 @@ const App = () => {
 					<Navbar />
 					<Routes>
 						<Route path='/' element={<Landing />} />
+						<Route
+							path='*'
+							element={
+								<React.Suspense fallback={<>...</>}>
+									<WildcardPage />
+								</React.Suspense>
+							}
+						/>
 						<Route
 							path='/register'
 							element={
