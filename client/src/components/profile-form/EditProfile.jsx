@@ -53,7 +53,7 @@ const EditProfile = ({
 			instagram:
 				loading || !profile.social.instagram ? "" : profile.social.instagram,
 		});
-	}, [loading]);
+	}, [loading, getCurrentProfileAction]);
 
 	const changeHandler = (e) => {
 		setProfileData({ ...profileData, [e.target.name]: e.target.value });
