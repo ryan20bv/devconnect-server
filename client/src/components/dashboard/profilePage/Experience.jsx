@@ -16,6 +16,7 @@ const Experience = ({
 
 	const mapExperience = experience.map((eachExperience) => {
 		const { _id, company, title, from, current, to } = eachExperience;
+		console.log(current);
 		return (
 			<tr key={_id}>
 				<td>{company}</td>

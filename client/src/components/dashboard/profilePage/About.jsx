@@ -7,7 +7,8 @@ const About = ({ userProfile }) => {
 			{bio && (
 				<React.Fragment>
 					<h2 className='text-primary'>
-						{userId.name.trim().split(" ")[0]}'s Bio
+						{userId.name}'s Bio
+						{/* {userId.name.trim().split(" ")[0]}'s Bio */}
 					</h2>
 					<p>{bio}</p>
 				</React.Fragment>
